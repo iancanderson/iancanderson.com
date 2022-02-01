@@ -1,34 +1,20 @@
 import DateFormatter from "./date-formatter";
-import CoverImage from "./cover-image";
 import Link from "next/link";
-import Author from "../types/author";
+import PostLink from "./post-link";
 
 type Props = {
   title: string;
-  coverImage: string;
   date: string;
   excerpt: string;
-  author: Author;
   slug: string;
+  externalUrl: string;
 };
 
-const PostPreview = ({
-  title,
-  coverImage,
-  date,
-  excerpt,
-  author,
-  slug,
-}: Props) => {
+const PostPreview = ({ title, date, excerpt, slug, externalUrl }: Props) => {
   return (
     <div>
-      <div className="mb-5">
-        <CoverImage slug={slug} title={title} src={coverImage} />
-      </div>
       <h3 className="text-3xl mb-3 leading-snug">
-        <Link as={`/posts/${slug}`} href="/posts/[slug]">
-          <a className="hover:underline">{title}</a>
-        </Link>
+        <PostLink externalUrl={externalUrl} title={title} slug={slug} />
       </h3>
       <div className="text-lg mb-4">
         <DateFormatter dateString={date} />
