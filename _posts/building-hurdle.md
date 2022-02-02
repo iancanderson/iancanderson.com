@@ -20,4 +20,4 @@ Check out the associated GitHub repos:
 
 ### Try it out!
 
-[![hurdle screenshot](/assets/blog/hurdle.png)](https://iancanderson.com/hurdle)
+<Image src="/assets/blog/hurdle.png" />
