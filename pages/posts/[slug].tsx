@@ -42,11 +42,9 @@ const Post = ({ post, morePosts, preview }: Props) => {
                 <title>{post.title} | iancanderson.com</title>
               </Head>
               <PostHeader title={post.title} date={post.date} />
-              <PostBody
-                content={
-                  <MDXRemote {...post.content} components={components} />
-                }
-              />
+              <PostBody>
+                <MDXRemote {...post.content} components={components} />
+              </PostBody>
             </article>
           </>
         )}
