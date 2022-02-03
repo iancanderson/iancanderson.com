@@ -20,12 +20,11 @@ type Props = {
   preview?: boolean;
 };
 
-const imgLoader = ({ src }: { src: string }) => {
+const Img = ({ src, ...props }: any) => {
   const isProd = process.env.CI === "true";
-  return isProd ? `/iancanderson.com/${src}` : src;
+  const prefixedSrc = isProd ? `/iancanderson.com/${src}` : src;
+  return <img src={prefixedSrc} {...props} />;
 };
-
-const Img = ({ ...props }: any) => <Image loader={imgLoader} {...props} />;
 
 const components = {
   Image: Img,
