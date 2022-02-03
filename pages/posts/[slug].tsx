@@ -21,7 +21,8 @@ type Props = {
 };
 
 const imgLoader = ({ src }: { src: string }) => {
-  return src;
+  const isProd = process.env.CI === "true";
+  return isProd ? `/iancanderson.com/${src}` : src;
 };
 
 const Img = ({ ...props }: any) => <Image loader={imgLoader} {...props} />;
