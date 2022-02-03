@@ -20,8 +20,14 @@ type Props = {
   preview?: boolean;
 };
 
+const imgLoader = ({ src }: { src: string }) => {
+  return src;
+};
+
+const Img = ({ ...props }: any) => <Image loader={imgLoader} {...props} />;
+
 const components = {
-  Image,
+  Image: Img,
 };
 
 const Post = ({ post, morePosts, preview }: Props) => {
@@ -42,11 +48,9 @@ const Post = ({ post, morePosts, preview }: Props) => {
                 <title>{post.title} | iancanderson.com</title>
               </Head>
               <PostHeader title={post.title} date={post.date} />
-              <PostBody
-                content={
-                  <MDXRemote {...post.content} components={components} />
-                }
-              />
+              <PostBody>
+                <MDXRemote {...post.content} components={components} />
+              </PostBody>
             </article>
           </>
         )}

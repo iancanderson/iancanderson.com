@@ -1,13 +1,13 @@
 import markdownStyles from "./markdown-styles.module.css";
 
 type Props = {
-  content: Element;
+  children: any;
 };
 
-const PostBody = ({ content }: Props) => {
+const PostBody = ({ children }: Props) => {
   return (
     <div className="max-w-2xl mx-auto">
-      <div className={markdownStyles["markdown"]}>{content}</div>
+      <div className={markdownStyles["markdown"]}>{children}</div>
     </div>
   );
 };

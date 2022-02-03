@@ -1,11 +1,11 @@
-import Author from "./author";
+import { MDXRemoteSerializeResult } from "next-mdx-remote";
 
 type PostType = {
   slug: string;
   title: string;
   date: string;
   excerpt: string;
-  content: string;
+  content: MDXRemoteSerializeResult<Record<string, unknown>>;
   externalUrl: string;
 };
 
