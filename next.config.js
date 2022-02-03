@@ -1,4 +1,4 @@
-const isProd = process.env.NODE_ENV === "production";
+const isProd = process.env.CI === "true";
 
 module.exports = {
   assetPrefix: isProd ? "/iancanderson.com/" : "",
