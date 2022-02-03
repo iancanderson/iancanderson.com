@@ -20,15 +20,7 @@ type Props = {
   preview?: boolean;
 };
 
-const Img = ({ src, ...props }: any) => {
-  const isProd = process.env.CI === "true";
-  const prefixedSrc = isProd ? `/iancanderson.com/${src}` : src;
-  return <img src={prefixedSrc} {...props} />;
-};
-
-const components = {
-  img: Img,
-};
+const components = {};
 
 const Post = ({ post, morePosts, preview }: Props) => {
   const router = useRouter();
