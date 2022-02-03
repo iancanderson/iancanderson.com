@@ -8,13 +8,20 @@ import Layout from "../../components/layout";
 import { getPostBySlug, getAllPosts } from "../../lib/api";
 import PostTitle from "../../components/post-title";
 import Head from "next/head";
-import markdownToHtml from "../../lib/markdownToHtml";
+import Image from "next/image";
 import PostType from "../../types/post";
+import { serialize } from "next-mdx-remote/serialize";
+import { MDXRemote } from "next-mdx-remote";
+import prism from "remark-prism";
 
 type Props = {
   post: PostType;
   morePosts: PostType[];
   preview?: boolean;
+};
+
+const components = {
+  Image,
 };
 
 const Post = ({ post, morePosts, preview }: Props) => {
@@ -35,7 +42,11 @@ const Post = ({ post, morePosts, preview }: Props) => {
                 <title>{post.title} | iancanderson.com</title>
               </Head>
               <PostHeader title={post.title} date={post.date} />
-              <PostBody content={post.content} />
+              <PostBody
+                content={
+                  <MDXRemote {...post.content} components={components} />
+                }
+              />
             </article>
           </>
         )}
@@ -62,13 +73,17 @@ export async function getStaticProps({ params }: Params) {
     "ogImage",
     "coverImage",
   ]);
-  const content = await markdownToHtml(post.content || "");
+  const mdxSource = await serialize(post.content, {
+    mdxOptions: {
+      remarkPlugins: [prism],
+    },
+  });
 
   return {
     props: {
       post: {
         ...post,
-        content,
+        content: mdxSource,
       },
     },
   };
