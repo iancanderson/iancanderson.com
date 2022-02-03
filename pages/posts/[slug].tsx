@@ -26,8 +26,13 @@ const Img = ({ src, ...props }: any) => {
   return <img src={prefixedSrc} {...props} />;
 };
 
+const HyperLink = ({ ...props }: any) => {
+  return <a className="text-green-600" {...props} />;
+};
+
 const components = {
-  Image: Img,
+  img: Img,
+  a: HyperLink,
 };
 
 const Post = ({ post, morePosts, preview }: Props) => {

@@ -21,5 +21,5 @@ Check out the associated GitHub repos:
 ### Try it out!
 
 <a href="https://iancanderson.com/hurdle/">
-	<Image src="/assets/blog/hurdle.png" width="1286" height="1536"/>
+	<img src="/assets/blog/hurdle.png" width="1286" height="1536"/>
 </a>
