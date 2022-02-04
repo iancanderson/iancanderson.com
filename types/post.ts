@@ -4,7 +4,6 @@ type PostType = {
   slug: string;
   title: string;
   date: string;
-  excerpt: string;
   content: MDXRemoteSerializeResult<Record<string, unknown>>;
   externalUrl: string;
 };

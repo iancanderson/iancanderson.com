@@ -27,7 +27,6 @@ const Index = ({ allPosts }: Props) => {
               title={heroPost.title}
               date={heroPost.date}
               slug={heroPost.slug}
-              excerpt={heroPost.excerpt}
               externalUrl={heroPost.externalUrl}
             />
           )}
@@ -41,13 +40,7 @@ const Index = ({ allPosts }: Props) => {
 export default Index;
 
 export const getStaticProps = async () => {
-  const allPosts = getAllPosts([
-    "title",
-    "date",
-    "slug",
-    "excerpt",
-    "externalUrl",
-  ]);
+  const allPosts = getAllPosts(["title", "date", "slug", "externalUrl"]);
 
   return {
     props: { allPosts },
