@@ -13,6 +13,7 @@ import PostType from "../../types/post";
 import { serialize } from "next-mdx-remote/serialize";
 import { MDXRemote } from "next-mdx-remote";
 import prism from "remark-prism";
+import Counter from "../../components/counter";
 
 type Props = {
   post: PostType;
@@ -20,7 +21,9 @@ type Props = {
   preview?: boolean;
 };
 
-const components = {};
+const components = {
+  Counter,
+};
 
 const Post = ({ post, morePosts, preview }: Props) => {
   const router = useRouter();
