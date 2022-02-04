@@ -38,6 +38,11 @@ const Meta = () => {
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/themes/prism.min.css"
       />
+      <script
+        defer
+        data-domain="iancanderson.com"
+        src="https://plausible.io/js/plausible.js"
+      ></script>
     </Head>
   );
 };
