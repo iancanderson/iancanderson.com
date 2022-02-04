@@ -5,7 +5,7 @@ date: "2022-02-01T12:00:00.000Z"
 
 ### The idea
 
-Recently I built [Hurdle](https://iancanderson.com/hurdle), which is a [wordle](https://www.powerlanguage.co.uk/wordle/)-like game where you have to guess the "correct" equation. I wasn't sure if a math game like this would be fun or not, but people have been enjoying it!
+Recently I built [Hurdle](https://hurdle.iancanderson.com), which is a [wordle](https://www.powerlanguage.co.uk/wordle/)-like game where you have to guess the "correct" equation. I wasn't sure if a math game like this would be fun or not, but people have been enjoying it!
 
 ### The code
 
@@ -20,6 +20,6 @@ Check out the associated GitHub repos:
 
 ### Try it out!
 
-<a href="https://iancanderson.com/hurdle/">
+<a href="https://hurdle.iancanderson.com/">
 	<img src="/assets/blog/hurdle.png" width="1286" height="1536"/>
 </a>
