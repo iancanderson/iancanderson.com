@@ -7,7 +7,7 @@ _Disclaimer: I am not a financial advisor. Do not take anything I say or write a
 
 ## Free lunch?
 
-From what I can tell, there aren't a lot of "free lunches" in the investing. Either you take more risk and get rewarded (with a lot of volatility in the meantime), or you take less risk and get lower returns with less volatility. It turns out, risk-parity portfolios can kind of get you a free lunch: more reward with the same risk as a more "standard" portfolio (or less risk with the same reward).
+From what I can tell, there aren't a lot of "free lunches" in investing. Either you take more risk and get rewarded (with a lot of volatility in the meantime), or you take less risk and get lower returns with less volatility. It turns out, risk-parity portfolios can kind of get you a free lunch: more reward with the same risk as a more "standard" portfolio (or less risk with the same reward).
 
 ## Risk parity?
 
