@@ -29,7 +29,7 @@ Here are the correlations between each asset class vs the total US stock market 
 
 ### Total stock market: 1.00
 
-Right. The total stock market is perfectly correlated with itself, so it's ratio is 1.00.
+Right. The total stock market is perfectly correlated with itself, so its ratio is 1.00.
 
 ### Long term treasury bonds: -0.14
 
