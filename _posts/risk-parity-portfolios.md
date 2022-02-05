@@ -137,7 +137,7 @@ The easiest way to get a leveraged portfolio is to buy ETFs that have leverage b
 
 An example portfolio that recently made some waves in financial forums is called "Hedgefundie's Excellent Adventure." It's comprised completely of `UPRO` and `TMF`, the most recent rendition being 55% in `UPRO` and 45% in `TMF`.
 
-The backtesting results are impressive to say the least, with a ~16.7% annual return since 1987. See this article for a summary and backtest of the hedgefunie's excellent adventure portfolio: [HEDGEFUNDIE’s Excellent Adventure (UPRO/TMF) – A Summary](https://www.optimizedportfolio.com/hedgefundie-adventure/)
+The backtesting results are impressive to say the least, with a ~16.7% annual return since 1987, compared to 9.87% for the S&P 500, all while maintaining similar downside to the S&P500. See this article for a summary and backtest of the hedgefunie's excellent adventure portfolio: [HEDGEFUNDIE’s Excellent Adventure (UPRO/TMF) – A Summary](https://www.optimizedportfolio.com/hedgefundie-adventure/). This is an experimental portfolio. I don't think I'd actually go for this for my main portfolio, but it's a good illustration for how leverage can be used to make a portfolio more efficient.
 
 ## Conclusion
 
