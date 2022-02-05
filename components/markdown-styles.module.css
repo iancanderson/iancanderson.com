@@ -20,3 +20,8 @@
 .markdown a {
   @apply text-green-600 hover:underline;
 }
+
+.markdown ul {
+  @apply list-disc;
+  @apply list-inside;
+}
