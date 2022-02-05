@@ -97,7 +97,7 @@ Here's what that could look like:
 - 24% gold
 - -20% cash (this represents the leverage to make the portfolio add up to 100%)
 
-We should expect higher returns of the leveraged portfolio compared to the 50/30/20 portfolio. Let's compare this leveraged portfolio with a straight 100% total stock market allocation.
+We should expect higher returns from the leveraged portfolio compared to the 50/30/20 portfolio. Let's compare this leveraged portfolio with a straight 100% total stock market allocation.
 
 [Portfolio visualizer analysis since 2004](https://www.portfoliovisualizer.com/backtest-portfolio?s=y&timePeriod=4&startYear=1985&firstMonth=1&endYear=2022&lastMonth=12&calendarAligned=true&includeYTD=false&initialAmount=10000&annualOperation=0&annualAdjustment=0&inflationAdjusted=true&annualPercentage=0.0&frequency=4&rebalanceType=1&absoluteDeviation=5.0&relativeDeviation=25.0&leverageType=0&leverageRatio=0.0&debtAmount=0&debtInterest=0.0&maintenanceMargin=25.0&leveragedBenchmark=false&reinvestDividends=true&showYield=false&showFactors=false&factorModel=3&portfolioNames=false&portfolioName1=Portfolio+1&portfolioName2=Portfolio+2&portfolioName3=Portfolio+3&symbol1=VTSAX&allocation1_1=100&allocation1_2=60&symbol2=TLT&allocation2_2=36&symbol3=GLD&allocation3_2=24&symbol4=CASHX&allocation4_2=-20)
 
