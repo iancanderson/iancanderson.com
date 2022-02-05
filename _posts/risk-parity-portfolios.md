@@ -45,7 +45,7 @@ Gold generally has zero-ish correlation with stocks. You can think of gold as ki
 
 ## The 60/40
 
-The "60/40" portfolio has become a kind of standard relatively consersative portfolio, consisting of 60% total stock market and 40% total bond market.
+The "60/40" portfolio has become a kind of standard, relatively conservative portfolio, consisting of 60% total stock market and 40% total bond market.
 
 Let's compare the performance of the 60/40 portfolio with a portfolio with less-correlated assets:
 
