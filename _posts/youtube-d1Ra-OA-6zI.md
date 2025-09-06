@@ -6,5 +6,10 @@ type: video
 tags:
   - music
   - video
+videoDescription: >-
+  The story of how I came to be a musician and release my debut album,
+  "Perennials."
+
+  http://music.iancanderson.com
 ---
 

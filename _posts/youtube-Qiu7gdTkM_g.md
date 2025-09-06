@@ -6,5 +6,6 @@ type: video
 tags:
   - music
   - video
+videoDescription: "My cover of Ben Folds Five's 'Cigarette.'\r\n\r\nListen to and/or order my debut album here: http://music.iancanderson.com"
 ---
 

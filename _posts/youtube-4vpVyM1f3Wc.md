@@ -6,5 +6,8 @@ type: video
 tags:
   - music
   - video
+videoDescription: >-
+  This one goes out to my beautiful girlfriend Lauren.  Happy 4 years and here's
+  to many more!
 ---
 

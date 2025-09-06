@@ -7,5 +7,6 @@ tags:
   - katies-40th
   - music
   - video
+videoDescription: Celebrating Katie's birthday with a song from 130 years ago!
 ---
 

@@ -6,5 +6,8 @@ type: video
 tags:
   - music
   - video
+videoDescription: >-
+  see
+  http://streetpianos.com/boston2013/pianos/greenway-fort-point-channel-park/
 ---
 

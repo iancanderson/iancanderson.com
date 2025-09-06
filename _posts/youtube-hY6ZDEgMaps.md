@@ -7,5 +7,6 @@ tags:
   - katies-40th
   - music
   - video
+videoDescription: '10 days before Katie''s birthday, celebrating with a song from 10 years ago!'
 ---
 

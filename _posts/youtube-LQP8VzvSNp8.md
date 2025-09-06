@@ -7,5 +7,8 @@ tags:
   - katies-40th
   - music
   - video
+videoDescription: >-
+  20 years before Kathleen's birthday, celebrating with a song from 20 years
+  ago!
 ---
 
