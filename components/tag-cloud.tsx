@@ -4,6 +4,18 @@ type Props = {
   counts: Record<string, number>;
 };
 
+const EMOJI: Record<string, string> = {
+  software: "💻",
+  investing: "📈",
+  music: "🎵",
+  video: "🎬",
+  homebrewing: "🍺",
+};
+
+function emojiFor(tag: string) {
+  return EMOJI[tag.toLowerCase()] || "🏷️";
+}
+
 const TagCloud = ({ counts }: Props) => {
   const entries = Object.entries(counts);
   if (entries.length === 0) return null;
@@ -22,10 +34,15 @@ const TagCloud = ({ counts }: Props) => {
   return (
     <div className="mb-10 brutal-border bg-[color:var(--brutal-card)] p-4 text-[color:var(--brutal-fg)]">
       <h2 className="text-xl mb-3 font-extrabold">Tags</h2>
-      <div className="flex flex-wrap gap-x-3 gap-y-2">
+      <div className="flex flex-wrap">
         {sorted.map(([tag, n]) => (
           <Link key={tag} href={`/tags/${tag}`}>
-            <a className={`hover:underline ${weightFor(n)}`}>#{tag}</a>
+            <a
+              className={`inline-flex items-center gap-2 mr-3 mb-2 px-2 py-1 border border-[color:var(--brutal-border)] ${weightFor(n)}`}
+            >
+              <span aria-hidden>{emojiFor(tag)}</span>
+              <span>#{tag}</span>
+            </a>
           </Link>
         ))}
       </div>
