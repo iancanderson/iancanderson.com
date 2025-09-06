@@ -11,6 +11,10 @@
   --brutal-accent: #ff3b3b;
   --brutal-accent-2: #00a3ff;
   --brutal-card: #ffffff;
+  --brutal-border: #000000;
+  --brutal-shadow: #000000;
+  --brutal-tag-bg: #fde68a; /* amber-300 */
+  --brutal-tag-fg: #111827;
 }
 
 /* Theme 2: lime wash + sky/red accents */
@@ -20,6 +24,10 @@
   --brutal-accent: #0ea5e9; /* sky-500 */
   --brutal-accent-2: #ef4444; /* red-500 */
   --brutal-card: #ffffff;
+  --brutal-border: #000000;
+  --brutal-shadow: #000000;
+  --brutal-tag-bg: #fef08a; /* yellow-300 */
+  --brutal-tag-fg: #0f172a;
 }
 
 /* Theme 3: slate wash + green/amber accents */
@@ -29,6 +37,10 @@
   --brutal-accent: #22c55e; /* green-500 */
   --brutal-accent-2: #f59e0b; /* amber-500 */
   --brutal-card: #ffffff;
+  --brutal-border: #000000;
+  --brutal-shadow: #000000;
+  --brutal-tag-bg: #d1fae5; /* emerald-100 */
+  --brutal-tag-fg: #022c22;
 }
 
 /* Theme 4 (dark): near-black + yellow/cyan accents */
@@ -37,22 +49,22 @@
   --brutal-fg: #f5f5f5;
   --brutal-accent: #ffcc00;
   --brutal-accent-2: #00e5ff;
-  --brutal-card: #111111;
+  --brutal-card: #161616; /* lighter than bg for contrast */
+  --brutal-border: #ffffff; /* visible borders */
+  --brutal-shadow: #ffffff;
+  --brutal-tag-bg: #222222;
+  --brutal-tag-fg: #f5f5f5;
 }
 
 /* Utilities */
-.brutal-border {
-  @apply border-4 border-black shadow-[6px_6px_0_0_#000];
-}
+.brutal-border { border: 4px solid var(--brutal-border); box-shadow: 6px 6px 0 0 var(--brutal-shadow); }
 .brutal-button {
   @apply brutal-border bg-[color:var(--brutal-accent)] text-white px-4 py-2 font-bold uppercase tracking-wide;
 }
 .brutal-link {
   @apply underline decoration-4 decoration-[color:var(--brutal-accent)] hover:decoration-[color:var(--brutal-accent-2)];
 }
-.brutal-tag {
-  @apply brutal-border bg-yellow-200 px-2 py-0.5 text-xs mr-2 mb-2 inline-block;
-}
+.brutal-tag { display:inline-block; margin-right:0.5rem; margin-bottom:0.5rem; padding:0.125rem 0.5rem; font-size:0.75rem; background: var(--brutal-tag-bg); color: var(--brutal-tag-fg); }
 
 /* Page background */
 body {

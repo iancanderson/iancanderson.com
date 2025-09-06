@@ -20,9 +20,9 @@ const TagCloud = ({ counts }: Props) => {
   const sorted = entries.sort(([a], [b]) => a.localeCompare(b));
 
   return (
-    <div className="mb-10 brutal-border bg-[color:var(--brutal-card)] p-4">
+    <div className="mb-10 brutal-border bg-[color:var(--brutal-card)] p-4 text-[color:var(--brutal-fg)]">
       <h2 className="text-xl mb-3 font-extrabold">Tags</h2>
-      <div className="flex flex-wrap gap-x-3 gap-y-2 text-gray-800">
+      <div className="flex flex-wrap gap-x-3 gap-y-2">
         {sorted.map(([tag, n]) => (
           <Link key={tag} href={`/tags/${tag}`}>
             <a className={`hover:underline ${weightFor(n)}`}>#{tag}</a>

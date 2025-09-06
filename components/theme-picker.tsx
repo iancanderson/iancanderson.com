@@ -7,7 +7,8 @@ const THEMES = [
   { id: "theme-brutal-dark", label: "dark" },
 ] as const;
 
-const THEME_CLASSES = THEMES.map((t) => t.id);
+type ThemeId = typeof THEMES[number]["id"];
+const THEME_CLASSES: ThemeId[] = THEMES.map((t) => t.id);
 const STORAGE_KEY = "theme";
 
 function applyTheme(themeId: string) {
@@ -17,13 +18,17 @@ function applyTheme(themeId: string) {
   if (themeId) body.classList.add(themeId);
 }
 
+function isThemeId(value: string | null): value is ThemeId {
+  return !!value && (THEME_CLASSES as readonly string[]).includes(value);
+}
+
 export default function ThemePicker() {
-  const [theme, setTheme] = useState<string>(THEMES[1].id); // default to "two"
+  const [theme, setTheme] = useState<ThemeId>(THEMES[1].id); // default to "two"
 
   useEffect(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
-      const initial = saved && THEME_CLASSES.includes(saved) ? saved : THEMES[1].id;
+      const initial: ThemeId = isThemeId(saved) ? saved : THEMES[1].id;
       setTheme(initial);
       applyTheme(initial);
       if (!saved) localStorage.setItem(STORAGE_KEY, initial);
@@ -33,7 +38,7 @@ export default function ThemePicker() {
     }
   }, []);
 
-  function chooseTheme(id: string) {
+  function chooseTheme(id: ThemeId) {
     setTheme(id);
     applyTheme(id);
     try {
@@ -42,7 +47,7 @@ export default function ThemePicker() {
   }
 
   return (
-    <div className="text-sm text-gray-700">
+    <div className="text-sm text-[color:var(--brutal-fg)]">
       <span className="mr-2 font-semibold">theme:</span>
       {THEMES.map((t, idx) => (
         <span key={t.id}>

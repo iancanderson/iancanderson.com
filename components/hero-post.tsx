@@ -15,7 +15,7 @@ const HeroPost = ({ title, date, externalUrl, slug, isVideo, tags }: Props) => {
   return (
     <section>
       <div className="mb-10">
-        <div className="brutal-border bg-[color:var(--brutal-card)] p-5">
+        <div className="brutal-border bg-[color:var(--brutal-card)] p-5 text-[color:var(--brutal-fg)]">
           <h3 className="mb-3 text-3xl lg:text-4xl leading-tight">
             {isVideo && (
               <span className="mr-3 align-middle inline-block text-xs font-semibold uppercase tracking-wide text-red-600">Video</span>
@@ -23,7 +23,7 @@ const HeroPost = ({ title, date, externalUrl, slug, isVideo, tags }: Props) => {
             <PostLink externalUrl={externalUrl} title={title} slug={slug} />
           </h3>
           {Array.isArray(tags) && tags.length > 0 && (
-            <div className="mb-2 text-sm text-gray-800">
+            <div className="mb-2 text-sm">
               {tags.map((t) => (
                 <Link key={t} href={`/tags/${t}`}>
                   <a className="brutal-tag">#{t}</a>
