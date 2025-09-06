@@ -22,9 +22,6 @@ const PostPreview = ({ title, date, slug, externalUrl, isVideo, tags, videoDescr
   return (
     <div className="brutal-border bg-[color:var(--brutal-card)] p-4 text-[color:var(--brutal-fg)]">
       <h3 className="text-2xl mb-3 leading-snug">
-        {isVideo && (
-          <span className="mr-2 align-middle inline-block text-[10px] font-semibold uppercase tracking-wide text-red-600">Video</span>
-        )}
         <PostLink externalUrl={externalUrl} title={title} slug={slug} />
       </h3>
       {isVideo && videoDescription && (
