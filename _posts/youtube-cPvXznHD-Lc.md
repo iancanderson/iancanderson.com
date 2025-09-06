@@ -5,5 +5,8 @@ title: >-
 date: '2010-04-14T02:33:57Z'
 youtubeId: cPvXznHD-Lc
 type: video
+tags:
+  - music
+  - video
 ---
 

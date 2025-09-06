@@ -1,6 +1,8 @@
 ---
-title: "My Next.js blog"
-date: "2022-02-03T12:00:00.000Z"
+title: My Next.js blog
+date: '2022-02-03T12:00:00.000Z'
+tags:
+  - software
 ---
 
 ## Before

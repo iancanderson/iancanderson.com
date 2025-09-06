@@ -1,6 +1,8 @@
 ---
-title: "How to deprecate Ruby methods"
-date: "2013-02-07T12:00:00.000Z"
+title: How to deprecate Ruby methods
+date: '2013-02-07T12:00:00.000Z'
+tags:
+  - software
 ---
 
 I've seen comments like this all too often in rails projects:

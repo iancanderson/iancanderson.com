@@ -6,5 +6,6 @@ type: video
 tags:
   - katies-40th
   - music
+  - video
 ---
 

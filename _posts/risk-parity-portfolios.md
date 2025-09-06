@@ -1,6 +1,8 @@
 ---
-title: "Risk parity portfolios"
-date: "2022-02-04T12:00:00.000Z"
+title: Risk parity portfolios
+date: '2022-02-04T12:00:00.000Z'
+tags:
+  - investing
 ---
 
 _Disclaimer: I am not a financial advisor. Do not take anything I say or write as financial advice, ever._
