@@ -43,6 +43,19 @@ const Post = ({ post, morePosts, preview }: Props) => {
                 <title>{post.title} | iancanderson.com</title>
               </Head>
               <PostHeader title={post.title} date={post.date} />
+              {post.type === 'video' && post.youtubeId ? (
+                <div className="mb-8">
+                  <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0 }}>
+                    <iframe
+                      src={`https://www.youtube.com/embed/${post.youtubeId}`}
+                      title={post.title}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowFullScreen
+                      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 0 }}
+                    />
+                  </div>
+                </div>
+              ) : null}
               <PostBody>
                 <MDXRemote {...post.content} components={components} />
               </PostBody>
@@ -71,6 +84,9 @@ export async function getStaticProps({ params }: Params) {
     "content",
     "ogImage",
     "coverImage",
+    "externalUrl",
+    "type",
+    "youtubeId",
   ]);
   const mdxSource = await serialize(post.content, {
     mdxOptions: {

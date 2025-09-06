@@ -89,6 +89,7 @@ function writePostFile(snippet) {
     `title: "${title.replace(/"/g, '\\"')}"`,
     `date: "${publishedAt}"`,
     `externalUrl: ${url}`,
+    `youtubeId: ${videoId}`,
     'type: video',
     '---',
     '',
