@@ -9,9 +9,10 @@ type Props = {
   slug: string;
   isVideo?: boolean;
   tags?: string[];
+  videoDescription?: string;
 };
 
-const HeroPost = ({ title, date, externalUrl, slug, isVideo, tags }: Props) => {
+const HeroPost = ({ title, date, externalUrl, slug, isVideo, tags, videoDescription }: Props) => {
   return (
     <section>
       <div className="mb-10">
@@ -22,6 +23,9 @@ const HeroPost = ({ title, date, externalUrl, slug, isVideo, tags }: Props) => {
             )}
             <PostLink externalUrl={externalUrl} title={title} slug={slug} />
           </h3>
+          {isVideo && videoDescription && (
+            <p className="mb-2 text-base">{videoDescription}</p>
+          )}
           {Array.isArray(tags) && tags.length > 0 && (
             <div className="mb-2 text-sm">
               {tags.map((t) => (

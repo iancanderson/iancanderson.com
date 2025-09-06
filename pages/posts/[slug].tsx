@@ -56,6 +56,9 @@ const Post = ({ post, morePosts, preview }: Props) => {
                   </div>
                 </div>
               ) : null}
+              {post.type === 'video' && (post as any).videoDescription && (
+                <p className="mb-6 text-base">{(post as any).videoDescription}</p>
+              )}
               <PostBody>
                 <MDXRemote {...post.content} components={components} />
               </PostBody>
@@ -87,6 +90,7 @@ export async function getStaticProps({ params }: Params) {
     "externalUrl",
     "type",
     "youtubeId",
+    "videoDescription",
   ]);
   const mdxSource = await serialize(post.content, {
     mdxOptions: {

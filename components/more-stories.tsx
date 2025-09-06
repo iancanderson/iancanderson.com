@@ -18,6 +18,7 @@ const MoreStories = ({ posts }: Props) => {
             externalUrl={post.externalUrl}
             isVideo={post.type === 'video'}
             tags={post.tags}
+            videoDescription={post.videoDescription as any}
           />
         ))}
       </div>
