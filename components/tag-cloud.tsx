@@ -16,6 +16,12 @@ function emojiFor(tag: string) {
   return EMOJI[tag.toLowerCase()] || "🏷️";
 }
 
+function colorClass(tag: string) {
+  const t = tag.toLowerCase();
+  if (t in EMOJI) return `chip-${t}`;
+  return '';
+}
+
 const TagCloud = ({ counts }: Props) => {
   const entries = Object.entries(counts);
   if (entries.length === 0) return null;
@@ -37,10 +43,8 @@ const TagCloud = ({ counts }: Props) => {
       <div className="flex flex-wrap">
         {sorted.map(([tag, n]) => (
           <Link key={tag} href={`/tags/${tag}`}>
-            <a
-              className={`inline-flex items-center gap-2 mr-3 mb-2 px-2 py-1 border border-transparent hover:border-[color:var(--brutal-border)] ${weightFor(n)}`}
-            >
-              <span aria-hidden>{emojiFor(tag)}</span>
+            <a className={`brutal-chip ${colorClass(tag)} inline-flex items-center gap-2 mr-3 mb-2 px-2 py-1 ${weightFor(n)}`}>
+              <span className="chip-emoji" aria-hidden>{emojiFor(tag)}</span>
               <span>#{tag}</span>
             </a>
           </Link>
