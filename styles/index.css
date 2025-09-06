@@ -2,13 +2,42 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Brutalist theme tokens (first pass) */
-:root {
-  --brutal-bg: #fffbe6; /* warm off-white */
-  --brutal-fg: #111827; /* slate-900 */
-  --brutal-accent: #ff3b3b; /* punchy red */
-  --brutal-accent-2: #00a3ff; /* cyan blue */
+/* Brutalist theme tokens (palettes) */
+/* Default (Theme 1): warm off-white + red/cyan accents */
+:root,
+.theme-brutal-1 {
+  --brutal-bg: #fffbe6;
+  --brutal-fg: #111827;
+  --brutal-accent: #ff3b3b;
+  --brutal-accent-2: #00a3ff;
   --brutal-card: #ffffff;
+}
+
+/* Theme 2: lime wash + sky/red accents */
+.theme-brutal-2 {
+  --brutal-bg: #ecfccb; /* lime-100 */
+  --brutal-fg: #0f172a; /* slate-900 */
+  --brutal-accent: #0ea5e9; /* sky-500 */
+  --brutal-accent-2: #ef4444; /* red-500 */
+  --brutal-card: #ffffff;
+}
+
+/* Theme 3: slate wash + green/amber accents */
+.theme-brutal-3 {
+  --brutal-bg: #f1f5f9; /* slate-100 */
+  --brutal-fg: #020617; /* slate-950 */
+  --brutal-accent: #22c55e; /* green-500 */
+  --brutal-accent-2: #f59e0b; /* amber-500 */
+  --brutal-card: #ffffff;
+}
+
+/* Theme 4 (dark): near-black + yellow/cyan accents */
+.theme-brutal-dark {
+  --brutal-bg: #0a0a0a;
+  --brutal-fg: #f5f5f5;
+  --brutal-accent: #ffcc00;
+  --brutal-accent-2: #00e5ff;
+  --brutal-card: #111111;
 }
 
 /* Utilities */
