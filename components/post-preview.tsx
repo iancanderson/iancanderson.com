@@ -12,6 +12,24 @@ type Props = {
   videoDescription?: string;
 };
 
+const EMOJI: Record<string, string> = {
+  software: "💻",
+  investing: "📈",
+  music: "🎵",
+  video: "🎬",
+  homebrewing: "🍺",
+};
+
+function emojiFor(tag: string) {
+  return EMOJI[tag.toLowerCase()] || "🏷️";
+}
+
+function colorClass(tag: string) {
+  const t = tag.toLowerCase();
+  if (t in EMOJI) return `chip-${t}`;
+  return '';
+}
+
 function summarize(s?: string, max = 140) {
   if (!s) return '';
   const clean = s.replace(/\s+/g, ' ').trim();
@@ -31,7 +49,10 @@ const PostPreview = ({ title, date, slug, externalUrl, isVideo, tags, videoDescr
         <div className="mb-2 text-sm">
           {tags.map((t) => (
             <Link key={t} href={`/tags/${t}`}>
-              <a className="brutal-tag">#{t}</a>
+              <a className={`brutal-chip ${colorClass(t)} inline-flex items-center gap-2 mr-3 mb-2 px-2 py-1`}>
+                <span className="chip-emoji" aria-hidden>{emojiFor(t)}</span>
+                <span>#{t}</span>
+              </a>
             </Link>
           ))}
         </div>

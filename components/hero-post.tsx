@@ -13,6 +13,15 @@ type Props = {
 };
 
 const HeroPost = ({ title, date, externalUrl, slug, isVideo, tags, videoDescription }: Props) => {
+  const EMOJI: Record<string, string> = {
+    software: "💻",
+    investing: "📈",
+    music: "🎵",
+    video: "🎬",
+    homebrewing: "🍺",
+  };
+  const emojiFor = (tag: string) => EMOJI[tag.toLowerCase()] || "🏷️";
+  const colorClass = (tag: string) => (EMOJI[tag.toLowerCase()] ? `chip-${tag.toLowerCase()}` : '');
   return (
     <section>
       <div className="mb-10">
@@ -27,7 +36,10 @@ const HeroPost = ({ title, date, externalUrl, slug, isVideo, tags, videoDescript
             <div className="mb-2 text-sm">
               {tags.map((t) => (
                 <Link key={t} href={`/tags/${t}`}>
-                  <a className="brutal-tag">#{t}</a>
+                  <a className={`brutal-chip ${colorClass(t)} inline-flex items-center gap-2 mr-3 mb-2 px-2 py-1`}>
+                    <span className="chip-emoji" aria-hidden>{emojiFor(t)}</span>
+                    <span>#{t}</span>
+                  </a>
                 </Link>
               ))}
             </div>
