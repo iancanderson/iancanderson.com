@@ -14,6 +14,7 @@ type Props = {
 
 export default function TagPage({ tag, posts }: Props) {
   const sorted = posts.sort((a, b) => (a.date > b.date ? -1 : 1));
+  const count = sorted.length;
   return (
     <Layout>
       <Head>
@@ -21,7 +22,7 @@ export default function TagPage({ tag, posts }: Props) {
       </Head>
       <Container>
         <Intro />
-        <h1 className="text-4xl font-bold mb-8">Tag: {tag}</h1>
+        <h1 className="text-2xl font-semibold mb-8">{count} posts tagged with #{tag}</h1>
         {sorted.length > 0 ? (
           <MoreStories posts={sorted} />
         ) : (
@@ -49,4 +50,3 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     .filter((p: any) => Array.isArray(p.tags) && p.tags.includes(tag));
   return { props: { tag, posts } };
 };
-
