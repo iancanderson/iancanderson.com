@@ -62,7 +62,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const tag = String((params as any).tag);
-  const posts = getAllPosts(["title", "date", "slug", "externalUrl", "type", "tags"])
+  const posts = getAllPosts(["title", "date", "slug", "externalUrl", "type", "tags", "videoDescription"])
     .filter((p: any) => Array.isArray(p.tags) && p.tags.includes(tag));
   return { props: { tag, posts } };
 };
