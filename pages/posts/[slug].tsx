@@ -14,6 +14,7 @@ import { serialize } from "next-mdx-remote/serialize";
 import { MDXRemote } from "next-mdx-remote";
 import prism from "remark-prism";
 import Counter from "../../components/counter";
+import { Mermaid } from "mdx-mermaid/Mermaid";
 
 type Props = {
   post: PostType;
@@ -23,6 +24,7 @@ type Props = {
 
 const components = {
   Counter,
+  Mermaid,
 };
 
 const Post = ({ post, morePosts, preview }: Props) => {
@@ -74,7 +76,15 @@ export async function getStaticProps({ params }: Params) {
   ]);
   const mdxSource = await serialize(post.content, {
     mdxOptions: {
-      remarkPlugins: [prism],
+      remarkPlugins: [
+        [
+          require("mdx-mermaid"),
+          {
+            theme: { light: "neutral", dark: "forest" },
+          },
+        ],
+        prism,
+      ],
     },
   });
 
