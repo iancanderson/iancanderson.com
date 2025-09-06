@@ -28,6 +28,7 @@ const Index = ({ allPosts }: Props) => {
               date={heroPost.date}
               slug={heroPost.slug}
               externalUrl={heroPost.externalUrl}
+              isVideo={heroPost.type === 'video'}
             />
           )}
           {morePosts.length > 0 && <MoreStories posts={morePosts} />}
@@ -40,7 +41,7 @@ const Index = ({ allPosts }: Props) => {
 export default Index;
 
 export const getStaticProps = async () => {
-  const allPosts = getAllPosts(["title", "date", "slug", "externalUrl"]);
+  const allPosts = getAllPosts(["title", "date", "slug", "externalUrl", "type"]);
 
   return {
     props: { allPosts },

@@ -16,6 +16,7 @@ const MoreStories = ({ posts }: Props) => {
             date={post.date}
             slug={post.slug}
             externalUrl={post.externalUrl}
+            isVideo={post.type === 'video'}
           />
         ))}
       </div>
