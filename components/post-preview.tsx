@@ -8,9 +8,10 @@ type Props = {
   slug: string;
   externalUrl: string;
   isVideo?: boolean;
+  tags?: string[];
 };
 
-const PostPreview = ({ title, date, slug, externalUrl, isVideo }: Props) => {
+const PostPreview = ({ title, date, slug, externalUrl, isVideo, tags }: Props) => {
   return (
     <div>
       <h3 className="text-3xl mb-3 leading-snug">
@@ -19,6 +20,15 @@ const PostPreview = ({ title, date, slug, externalUrl, isVideo }: Props) => {
         )}
         <PostLink externalUrl={externalUrl} title={title} slug={slug} />
       </h3>
+      {Array.isArray(tags) && tags.length > 0 && (
+        <div className="mb-2 text-sm text-gray-600">
+          {tags.map((t) => (
+            <Link key={t} href={`/tags/${t}`}>
+              <a className="mr-2 inline-block hover:underline">#{t}</a>
+            </Link>
+          ))}
+        </div>
+      )}
       <div className="mb-4">
         <DateFormatter dateString={date} />
       </div>
