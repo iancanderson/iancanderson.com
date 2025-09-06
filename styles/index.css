@@ -1,3 +1,32 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Brutalist theme tokens (first pass) */
+:root {
+  --brutal-bg: #fffbe6; /* warm off-white */
+  --brutal-fg: #111827; /* slate-900 */
+  --brutal-accent: #ff3b3b; /* punchy red */
+  --brutal-accent-2: #00a3ff; /* cyan blue */
+  --brutal-card: #ffffff;
+}
+
+/* Utilities */
+.brutal-border {
+  @apply border-4 border-black shadow-[6px_6px_0_0_#000];
+}
+.brutal-button {
+  @apply brutal-border bg-[color:var(--brutal-accent)] text-white px-4 py-2 font-bold uppercase tracking-wide;
+}
+.brutal-link {
+  @apply underline decoration-4 decoration-[color:var(--brutal-accent)] hover:decoration-[color:var(--brutal-accent-2)];
+}
+.brutal-tag {
+  @apply brutal-border bg-yellow-200 px-2 py-0.5 text-xs mr-2 mb-2 inline-block;
+}
+
+/* Page background */
+body {
+  background: var(--brutal-bg);
+  color: var(--brutal-fg);
+}

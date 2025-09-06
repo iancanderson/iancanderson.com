@@ -13,7 +13,7 @@ const Layout = ({ preview, children }: Props) => {
       <Meta />
       <div className="min-h-screen">
         {preview && <Alert />}
-        <main>{children}</main>
+        <main className="px-4 md:px-8 lg:px-12 max-w-5xl mx-auto">{children}</main>
       </div>
       <Footer />
     </>
