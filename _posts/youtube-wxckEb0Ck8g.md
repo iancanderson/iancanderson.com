@@ -1,7 +1,6 @@
 ---
 title: I'm the Man Who Loves You (Wilco cover)
 date: '2023-09-05T11:33:31Z'
-externalUrl: 'https://www.youtube.com/watch?v=wxckEb0Ck8g'
 youtubeId: wxckEb0Ck8g
 type: video
 tags:
