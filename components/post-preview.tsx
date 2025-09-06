@@ -9,9 +9,16 @@ type Props = {
   externalUrl: string;
   isVideo?: boolean;
   tags?: string[];
+  videoDescription?: string;
 };
 
-const PostPreview = ({ title, date, slug, externalUrl, isVideo, tags }: Props) => {
+function summarize(s?: string, max = 140) {
+  if (!s) return '';
+  const clean = s.replace(/\s+/g, ' ').trim();
+  return clean.length > max ? clean.slice(0, max - 1) + '…' : clean;
+}
+
+const PostPreview = ({ title, date, slug, externalUrl, isVideo, tags, videoDescription }: Props) => {
   return (
     <div className="brutal-border bg-[color:var(--brutal-card)] p-4 text-[color:var(--brutal-fg)]">
       <h3 className="text-2xl mb-3 leading-snug">
@@ -20,6 +27,9 @@ const PostPreview = ({ title, date, slug, externalUrl, isVideo, tags }: Props) =
         )}
         <PostLink externalUrl={externalUrl} title={title} slug={slug} />
       </h3>
+      {isVideo && videoDescription && (
+        <p className="mb-2 text-sm">{summarize(videoDescription)}</p>
+      )}
       {Array.isArray(tags) && tags.length > 0 && (
         <div className="mb-2 text-sm">
           {tags.map((t) => (

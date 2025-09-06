@@ -77,6 +77,7 @@ function writePostFile(snippet) {
   if (!videoId) return false;
   const title = snippet.title || 'Untitled';
   const publishedAt = snippet.publishedAt || new Date().toISOString();
+  const description = (snippet.description || '').replace(/\r\n/g, '\n');
   const slug = `youtube-${videoId}`;
   const filename = path.join(process.cwd(), '_posts', `${slug}.md`);
   if (fs.existsSync(filename)) {
@@ -88,6 +89,8 @@ function writePostFile(snippet) {
     `title: "${title.replace(/"/g, '\\"')}"`,
     `date: "${publishedAt}"`,
     `youtubeId: ${videoId}`,
+    'videoDescription: |',
+    ...description.split('\n').map((l) => '  ' + l),
     'type: video',
     '---',
     '',

@@ -9,6 +9,7 @@ type PostType = {
   externalUrl: string;
   type?: PostKind; // 'article' | 'video'
   youtubeId?: string;
+  videoDescription?: string;
   tags?: string[];
 };
 
