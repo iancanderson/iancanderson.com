@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { HOME_OG_IMAGE_URL } from "../lib/constants";
+import { HOME_OG_IMAGE_URL, SITE_NAME, SITE_URL } from "../lib/constants";
 
 const Meta = () => {
   return (
@@ -33,7 +33,16 @@ const Meta = () => {
       <meta name="theme-color" content="#000" />
       <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
       <meta name="description" content="Ian C. Anderson's website" />
+      <meta property="og:title" content={SITE_NAME} />
+      <meta property="og:description" content="Ian C. Anderson's website" />
+      <meta property="og:type" content="website" />
+      <meta property="og:url" content={SITE_URL} />
+      <meta property="og:site_name" content={SITE_NAME} />
       <meta property="og:image" content={HOME_OG_IMAGE_URL} />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={SITE_NAME} />
+      <meta name="twitter:description" content="Ian C. Anderson's website" />
+      <meta name="twitter:image" content={HOME_OG_IMAGE_URL} />
       <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/themes/prism.min.css"
