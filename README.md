@@ -42,12 +42,11 @@ Generates one `_posts/youtube-<videoId>.md` per upload from your channel.
 Local run:
 ```bash
 export YOUTUBE_API_KEY=your_api_key
-export YOUTUBE_CHANNEL_ID=UCxxxxxxxxxxxxxxxx
 npm run sync:youtube
 ```
 
 GitHub Actions (daily): `.github/workflows/youtube-sync.yml`
-- Add repo secrets: `YOUTUBE_API_KEY`, `YOUTUBE_CHANNEL_ID`.
+- Add repo secret: `YOUTUBE_API_KEY`.
 - The workflow runs daily and on manual dispatch, commits new `_posts/youtube-*.md` if any.
 
 ## Project Layout

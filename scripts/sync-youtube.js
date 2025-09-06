@@ -4,7 +4,6 @@
 
   Requirements (env):
     - YOUTUBE_API_KEY (YouTube Data API v3 key)
-    - YOUTUBE_CHANNEL_ID (preferred) e.g., UCxxxxxxxxxxxxxxxx
 
   Usage:
     node scripts/sync-youtube.js
@@ -21,14 +20,12 @@ const path = require('path');
 const https = require('https');
 
 const API_KEY = process.env.YOUTUBE_API_KEY;
-const CHANNEL_ID = process.env.YOUTUBE_CHANNEL_ID; // required
+const ENV_CHANNEL_ID = process.env.YOUTUBE_CHANNEL_ID; // optional override
+// Hardcoded canonical channel ID for youtube.com/iancanderson
+const CHANNEL_ID = 'UCvRvcLNML0QOOAah4HNXg8g';
 
 if (!API_KEY) {
   console.error('Missing env YOUTUBE_API_KEY');
-  process.exit(1);
-}
-if (!CHANNEL_ID) {
-  console.error('Missing env YOUTUBE_CHANNEL_ID');
   process.exit(1);
 }
 
@@ -104,7 +101,8 @@ function writePostFile(snippet) {
 async function main() {
   const postsDir = path.join(process.cwd(), '_posts');
   if (!fs.existsSync(postsDir)) fs.mkdirSync(postsDir);
-  const uploadsId = await getUploadsPlaylistId(CHANNEL_ID);
+  const resolvedChannelId = ENV_CHANNEL_ID || CHANNEL_ID;
+  const uploadsId = await getUploadsPlaylistId(resolvedChannelId);
   const items = await getAllPlaylistItems(uploadsId);
   let created = 0;
   for (const snip of items) {
@@ -117,4 +115,3 @@ main().catch((e) => {
   console.error('YouTube sync failed:', e.message);
   process.exit(1);
 });
-
