@@ -78,6 +78,14 @@
   transform: translate(-2px, -2px) rotate(-0.5deg);
   background-color: rgba(var(--chip-color-rgb, 0,0,0), 0.12);
 }
+
+/* Active state (same look as hover, but persistent) */
+.brutal-chip.is-active {
+  border-color: var(--brutal-border);
+  box-shadow: 6px 6px 0 0 var(--brutal-shadow);
+  transform: translate(-2px, -2px) rotate(-0.5deg);
+  background-color: rgba(var(--chip-color-rgb, 0,0,0), 0.12);
+}
 .brutal-chip .chip-emoji { transition: transform 80ms ease-in-out; }
 .brutal-chip:hover .chip-emoji { transform: translateY(-1px) rotate(-6deg) scale(1.07); }
 
