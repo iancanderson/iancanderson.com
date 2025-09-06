@@ -38,7 +38,7 @@ const TagCloud = ({ counts }: Props) => {
         {sorted.map(([tag, n]) => (
           <Link key={tag} href={`/tags/${tag}`}>
             <a
-              className={`inline-flex items-center gap-2 mr-3 mb-2 px-2 py-1 border border-[color:var(--brutal-border)] ${weightFor(n)}`}
+              className={`inline-flex items-center gap-2 mr-3 mb-2 px-2 py-1 border border-transparent hover:border-[color:var(--brutal-border)] ${weightFor(n)}`}
             >
               <span aria-hidden>{emojiFor(tag)}</span>
               <span>#{tag}</span>
