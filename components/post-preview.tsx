@@ -1,6 +1,7 @@
 import DateFormatter from "./date-formatter";
 import Link from "next/link";
 import PostLink from "./post-link";
+import { emojiForTag, colorClassForTag } from "../lib/tags";
 
 type Props = {
   title: string;
@@ -11,24 +12,6 @@ type Props = {
   tags?: string[];
   videoDescription?: string;
 };
-
-const EMOJI: Record<string, string> = {
-  software: "💻",
-  investing: "📈",
-  music: "🎵",
-  video: "🎬",
-  homebrewing: "🍺",
-};
-
-function emojiFor(tag: string) {
-  return EMOJI[tag.toLowerCase()] || "🏷️";
-}
-
-function colorClass(tag: string) {
-  const t = tag.toLowerCase();
-  if (t in EMOJI) return `chip-${t}`;
-  return '';
-}
 
 function summarize(s?: string, max = 140) {
   if (!s) return '';
@@ -49,8 +32,8 @@ const PostPreview = ({ title, date, slug, externalUrl, isVideo, tags, videoDescr
         <div className="mb-2 text-sm">
           {tags.map((t) => (
             <Link key={t} href={`/tags/${t}`}>
-              <a className={`brutal-chip ${colorClass(t)} inline-flex items-center gap-2 mr-3 mb-2 px-2 py-1`}>
-                <span className="chip-emoji" aria-hidden>{emojiFor(t)}</span>
+              <a className={`brutal-chip ${colorClassForTag(t)} inline-flex items-center gap-2 mr-3 mb-2 px-2 py-1`}>
+                <span className="chip-emoji" aria-hidden>{emojiForTag(t)}</span>
                 <span>#{t}</span>
               </a>
             </Link>
