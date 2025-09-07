@@ -1,73 +1,48 @@
 #!/usr/bin/env node
 /*
-  Sync latest SoundCloud tracks into _posts/ as Markdown entries.
+  Sync SoundCloud tracks into _posts/ as Markdown entries using a fixed RSS feed.
 
   Usage:
     node scripts/sync-soundcloud.js
 
   Behavior:
-    - Fetches RSS feed of SoundCloud tracks for the user
+    - Fetches RSS feed of SoundCloud tracks for the given user id
     - Writes one file per track: _posts/soundcloud-<id|slug>.md
     - Adds tag `music` and type `music`
     - Skips files that already exist
 
-  Notes:
-    - Uses public RSS at: https://soundcloud.com/<user>/tracks?format=rss
+  Feed selection:
+    - Uses SOUNDCLOUD_USER_ID if provided
+    - Otherwise defaults to user id 2178588
+    - Feed pattern: https://feeds.soundcloud.com/users/soundcloud:users:<id>/sounds.rss
 */
 
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-const zlib = require('zlib');
 
-const USERNAME = process.env.SOUNDCLOUD_USERNAME || 'iancanderson';
-const USER_ID = process.env.SOUNDCLOUD_USER_ID; // optional: numeric user id
+const USER_ID = process.env.SOUNDCLOUD_USER_ID || '2178588';
+const FEED_URL = `https://feeds.soundcloud.com/users/soundcloud:users:${USER_ID}/sounds.rss`;
 
 function get(url) {
   return new Promise((resolve, reject) => {
-    const req = https.get(
-      url,
-      {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0 Safari/537.36',
-          'Accept': 'application/rss+xml, application/xml;q=0.9, text/xml;q=0.8, */*;q=0.5',
-          'Accept-Encoding': 'gzip, deflate, br',
-        },
-      },
-      (res) => {
-        const status = res.statusCode || 0;
-        const enc = String(res.headers['content-encoding'] || '').toLowerCase();
-        let stream = res;
-        try {
-          if (enc.includes('br') && zlib.createBrotliDecompress) {
-            stream = res.pipe(zlib.createBrotliDecompress());
-          } else if (enc.includes('gzip')) {
-            stream = res.pipe(zlib.createGunzip());
-          } else if (enc.includes('deflate')) {
-            stream = res.pipe(zlib.createInflate());
+    https
+      .get(url, (res) => {
+        let data = '';
+        res.on('data', (c) => (data += c));
+        res.on('end', () => {
+          if (res.statusCode && res.statusCode >= 400) {
+            return reject(new Error(`HTTP ${res.statusCode}: ${data}`));
           }
-        } catch (_) {
-          // if decompression fails, fall back to raw stream
-          stream = res;
-        }
-
-        const chunks = [];
-        stream.on('data', (c) => chunks.push(Buffer.isBuffer(c) ? c : Buffer.from(c)));
-        stream.on('end', () => {
-          const body = Buffer.concat(chunks).toString('utf8');
-          if (status >= 400) {
-            return reject(new Error(`HTTP ${status}: ${body.slice(0, 200)}`));
-          }
-          resolve(body);
+          resolve(data);
         });
-      }
-    );
-    req.on('error', reject);
+      })
+      .on('error', reject);
   });
 }
 
 function extract(tag, xml) {
-  const re = new RegExp(`<${tag}[^>]*>([\s\S]*?)<\/${tag}>`, 'i');
+  const re = new RegExp(`<${tag}>([\s\S]*?)<\/${tag}>`, 'i');
   const m = xml.match(re);
   return m ? m[1].trim() : '';
 }
@@ -82,36 +57,20 @@ function sanitizeTitle(t) {
 
 function parseItems(rss) {
   const items = [];
-  const blocks = [];
-  const itemRe = /<item\b[\s\S]*?<\/item>/gi;
-  const entryRe = /<entry\b[\s\S]*?<\/entry>/gi;
-  let m;
-  while ((m = itemRe.exec(rss)) !== null) blocks.push(m[0]);
-  while ((m = entryRe.exec(rss)) !== null) blocks.push(m[0]);
-  console.log(`[soundcloud] Matched blocks: items=${rss.match(itemRe)?.length || 0} entries=${rss.match(entryRe)?.length || 0}`);
-
-  for (const block of blocks) {
+  const parts = rss.split(/<item>/i).slice(1); // skip header
+  for (const part of parts) {
+    const block = part.split(/<\/item>/i)[0];
     const rawTitle = extract('title', block);
     const title = sanitizeTitle(stripCdata(rawTitle));
-
-    // link: RSS <link>url</link> OR Atom <link href="url"/>
-    let link = stripCdata(extract('link', block));
-    if (!link) {
-      const hrefMatch = block.match(/<link[^>]*?href=["']([^"']+)["'][^>]*\/>/i);
-      if (hrefMatch) link = hrefMatch[1];
-    }
-
-    // date: RSS <pubDate> OR Atom <updated>
-    const pubDate = extract('pubDate', block) || extract('updated', block) || new Date().toUTCString();
-
-    const guid = extract('guid', block) || extract('id', block);
+    const link = stripCdata(extract('link', block));
+    const pubDate = extract('pubDate', block) || new Date().toUTCString();
+    const guid = extract('guid', block);
     let id = '';
     const guidId = (guid.match(/tracks:(\d+)/i) || [])[1];
     if (guidId) id = guidId;
     if (!id && link) {
-      const parts = link.split('?')[0].split('/').filter(Boolean);
-      const last = parts[parts.length - 1];
-      id = last || '';
+      const slug = link.split('/').filter(Boolean).pop();
+      id = slug || String(Date.now());
     }
     items.push({ id, title, link, pubDate });
   }
@@ -138,59 +97,14 @@ function writePostFile(item) {
   return true;
 }
 
-async function resolveUserId(username) {
-  if (USER_ID) return USER_ID;
-  const html = await get(`https://soundcloud.com/${username}`);
-  // Try several patterns found in SoundCloud pages
-  const patterns = [
-    /soundcloud:users:(\d+)/i,
-    /"user_id":\s*(\d+)/i,
-    /data-user-id=\"(\d+)\"/i,
-  ];
-  for (const re of patterns) {
-    const m = html.match(re);
-    if (m && m[1]) return m[1];
-  }
-  throw new Error('Unable to determine SoundCloud user id');
-}
-
 async function main() {
   const postsDir = path.join(process.cwd(), '_posts');
   if (!fs.existsSync(postsDir)) fs.mkdirSync(postsDir);
-  const userId = await resolveUserId(USERNAME);
-  const feedUrl = `https://feeds.soundcloud.com/users/soundcloud:users:${userId}/sounds.rss`;
-  console.log(`[soundcloud] Fetching RSS: ${feedUrl}`);
-  let rss = await get(feedUrl);
-  console.log(`[soundcloud] RSS length: ${rss.length}`);
-  let items = parseItems(rss);
-  console.log(`[soundcloud] Parsed items: ${items.length}`);
-  if (items.length === 0) {
-    // Fallback to legacy page RSS
-    const legacy = `https://soundcloud.com/${USERNAME}/tracks?format=rss`;
-    console.log(`[soundcloud] Falling back to: ${legacy}`);
-    rss = await get(legacy);
-    console.log(`[soundcloud] Legacy RSS length: ${rss.length}`);
-    items = parseItems(rss);
-    console.log(`[soundcloud] Parsed items (legacy): ${items.length}`);
-    if (items.length === 0) {
-      console.log('[soundcloud] Feed preview (first 400 chars):');
-      console.log(rss.slice(0, 400));
-    }
-  }
+  const rss = await get(FEED_URL);
+  const items = parseItems(rss);
   let created = 0;
   for (const it of items) {
-    if (!it.id) {
-      console.log(`[soundcloud] Skip item with missing id: ${it.title}`);
-      continue;
-    }
-    console.log(`[soundcloud] Track id=${it.id} title="${it.title}" link=${it.link}`);
-    const wrote = writePostFile(it);
-    if (wrote) {
-      created += 1;
-      console.log(`[soundcloud] Wrote _posts/soundcloud-${it.id}.md`);
-    } else {
-      console.log(`[soundcloud] Skipped existing _posts/soundcloud-${it.id}.md`);
-    }
+    if (writePostFile(it)) created += 1;
   }
   console.log(`SoundCloud sync complete. New files: ${created}`);
 }
