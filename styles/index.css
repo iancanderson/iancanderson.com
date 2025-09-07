@@ -96,6 +96,7 @@
 .chip-video { --chip-color-rgb: 239, 68, 68; } /* red-500 */
 .chip-homebrewing { --chip-color-rgb: 245, 158, 11; } /* amber-500 */
 .chip-podcast { --chip-color-rgb: 139, 92, 246; } /* violet-500 */
+.chip-katies-40th { --chip-color-rgb: 217, 70, 239; } /* fuchsia-500 */
 
 @media (prefers-reduced-motion: reduce) {
   .brutal-chip, .brutal-chip .chip-emoji { transition: none !important; }

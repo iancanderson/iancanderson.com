@@ -5,6 +5,7 @@ export const TAG_EMOJI: Record<string, string> = {
   video: "🎬",
   homebrewing: "🍺",
   podcast: "🎙️",
+  "katies-40th": "🎁",
 };
 
 export function emojiForTag(tag?: string): string {
