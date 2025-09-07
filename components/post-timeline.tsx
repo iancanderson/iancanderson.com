@@ -105,14 +105,14 @@ export default function PostTimeline({ posts }: Props) {
             <div key={p.slug} className="absolute" style={{ left: `${left}%`, top: 70 }}>
               <div className="flex flex-col items-center gap-1">
                 {tags.map((t: string, idx: number) => (
-                  <Link key={t + idx} as={`/posts/${p.slug}`} href="/posts/[slug]" legacyBehavior>
-                    <a
-                      className="hover:scale-110 transition-transform"
-                      title={`#${t} – ${formatDateUTC(p.date)}`}
-                      aria-label={`${t} post on ${formatDateUTC(p.date)}`}
-                    >
-                      <span style={{ fontSize: 18, lineHeight: 1 }}>{emojiForTag(t)}</span>
-                    </a>
+                  <Link
+                    key={t + idx}
+                    href={`/posts/${p.slug}`}
+                    className="hover:scale-110 transition-transform"
+                    title={`#${t} – ${formatDateUTC(p.date)}`}
+                    aria-label={`${t} post on ${formatDateUTC(p.date)}`}
+                  >
+                    <span style={{ fontSize: 18, lineHeight: 1 }}>{emojiForTag(t)}</span>
                   </Link>
                 ))}
               </div>

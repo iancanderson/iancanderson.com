@@ -52,11 +52,13 @@ const PostPreview = ({ title, date, slug, externalUrl, isVideo, tags, videoDescr
       {Array.isArray(tags) && tags.length > 0 && (
         <div className="mb-2 text-sm">
           {tags.map((t) => (
-            <Link key={t} href={`/tags/${t}`} legacyBehavior>
-              <a className={`brutal-chip ${colorClassForTag(t)} inline-flex items-center gap-2 mr-3 mb-2 px-2 py-1`}>
-                <span className="chip-emoji" aria-hidden>{emojiForTag(t)}</span>
-                <span>#{t}</span>
-              </a>
+            <Link
+              key={t}
+              href={`/tags/${t}`}
+              className={`brutal-chip ${colorClassForTag(t)} inline-flex items-center gap-2 mr-3 mb-2 px-2 py-1`}
+            >
+              <span className="chip-emoji" aria-hidden>{emojiForTag(t)}</span>
+              <span>#{t}</span>
             </Link>
           ))}
         </div>
