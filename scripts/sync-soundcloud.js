@@ -42,7 +42,8 @@ function get(url) {
 }
 
 function extract(tag, xml) {
-  const re = new RegExp(`<${tag}>([\s\S]*?)<\/${tag}>`, 'i');
+  // Supports <tag>...</tag> and <tag attr>...</tag>
+  const re = new RegExp(`<${tag}(?:\\s[^>]*)?>([\\s\\S]*?)<\\/${tag}>`, 'i');
   const m = xml.match(re);
   return m ? m[1].trim() : '';
 }
@@ -92,7 +93,11 @@ function parseItems(rss) {
     const block = part.split(/<\/item>/i)[0];
     const rawTitle = extract('title', block);
     const title = sanitizeTitle(stripCdata(rawTitle));
-    const link = stripCdata(extract('link', block));
+    let link = stripCdata(extract('link', block));
+    if (!link) {
+      const hrefMatch = block.match(/<link[^>]*?href=["']([^"']+)["'][^>]*\/>/i);
+      if (hrefMatch) link = hrefMatch[1];
+    }
     const pubDate = extract('pubDate', block) || new Date().toUTCString();
     const guid = extract('guid', block);
     const id = parseTrackId(guid, link, block);
@@ -105,7 +110,8 @@ function writePostFile(item) {
   const { id, title, link, pubDate } = item;
   if (!id) return false;
   const filename = path.join(process.cwd(), '_posts', `soundcloud-${id}.md`);
-  if (fs.existsSync(filename)) return false;
+  const overwrite = process.env.SOUNDCLOUD_OVERWRITE === '1';
+  if (!overwrite && fs.existsSync(filename)) return false;
   const dateIso = new Date(pubDate).toISOString();
   const fm = [
     '---',
