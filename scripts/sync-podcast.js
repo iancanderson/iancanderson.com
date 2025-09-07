@@ -16,15 +16,24 @@ const path = require('path');
 const https = require('https');
 
 const FEED_URL = process.env.PODCAST_FEED_URL || 'https://hunchpig.audio/podcast.xml';
+const DEBUG = process.env.PODCAST_DEBUG === '1';
 
-function get(url) {
+function get(url, redirects = 0) {
   return new Promise((resolve, reject) => {
     https
       .get(url, (res) => {
+        const status = res.statusCode || 0;
+        const loc = res.headers.location;
+        if ([301, 302, 307, 308].includes(status) && loc && redirects < 5) {
+          const nextUrl = new URL(loc, url).toString();
+          if (DEBUG) console.log(`[podcast] Redirect ${status} to ${nextUrl}`);
+          res.resume();
+          return resolve(get(nextUrl, redirects + 1));
+        }
         let data = '';
         res.on('data', (c) => (data += c));
         res.on('end', () => {
-          if (res.statusCode && res.statusCode >= 400) return reject(new Error(`HTTP ${res.statusCode}`));
+          if (status >= 400) return reject(new Error(`HTTP ${status}`));
           resolve(data);
         });
       })
@@ -64,25 +73,30 @@ function safeSlug(s) {
 
 function parseItems(rss) {
   const items = [];
-  const parts = rss.split(/<item>/i).slice(1);
-  for (const part of parts) {
-    const block = part.split(/<\/item>/i)[0];
+  let blocks = rss.split(/<item\b/i).slice(1).map((p) => p.split(/<\/item>/i)[0]);
+  if (DEBUG) console.log(`[podcast] Found RSS <item> blocks: ${blocks.length}`);
+  // Atom fallback (<entry>)
+  if (blocks.length === 0) {
+    blocks = rss.split(/<entry\b/i).slice(1).map((p) => p.split(/<\/entry>/i)[0]);
+    if (DEBUG) console.log(`[podcast] Found Atom <entry> blocks: ${blocks.length}`);
+  }
+  for (const block of blocks) {
     const rawTitle = extract('title', block);
     const title = sanitizeTitle(stripCdata(rawTitle));
-    const pubDate = extract('pubDate', block) || new Date().toUTCString();
+    const pubDate = extract('pubDate', block) || extract('updated', block) || extract('published', block) || new Date().toUTCString();
     let link = stripCdata(extract('link', block));
     if (!link) {
-      const hrefMatch = block.match(/<link[^>]*?href=["']([^"']+)["'][^>]*\/>/i);
+      const hrefMatch = block.match(/<link[^>]*?href=["']([^"']+)["'][^>]*>/i);
       if (hrefMatch) link = hrefMatch[1];
     }
     // Capture enclosure URL (audio)
     const audioUrl = (block.match(/<enclosure[^>]*url=["']([^"']+)["'][^>]*>/i) || [])[1] || '';
     // Summary from itunes:summary
-    const rawSummary = extract('itunes:summary', block) || extract('description', block);
+    const rawSummary = extract('itunes:summary', block) || extract('description', block) || extract('summary', block);
     const summary = stripCdata(rawSummary);
-    const guid = extract('guid', block);
+    const guid = extract('guid', block) || extract('id', block);
     let id = '';
-    const guidId = (String(guid).match(/([a-z0-9_-]{6,})$/i) || [])[1];
+    const guidId = (String(guid).match(/([a-z0-9][a-z0-9._-]{5,})$/i) || [])[1];
     if (guidId) id = guidId;
     if (!id && link) id = safeSlug(lastPathSegment(link));
     items.push({ id, title, link, pubDate, audioUrl, summary });
@@ -117,11 +131,17 @@ function writePostFile(item) {
 async function main() {
   const postsDir = path.join(process.cwd(), '_posts');
   if (!fs.existsSync(postsDir)) fs.mkdirSync(postsDir);
+  if (DEBUG) console.log(`[podcast] Fetching feed: ${FEED_URL}`);
   const rss = await get(FEED_URL);
+  if (DEBUG) console.log(`[podcast] RSS length: ${rss.length}`);
   const items = parseItems(rss);
+  if (DEBUG) console.log(`[podcast] Parsed items: ${items.length}`);
   let created = 0;
   for (const it of items) {
-    if (writePostFile(it)) created += 1;
+    if (writePostFile(it)) {
+      created += 1;
+      if (DEBUG) console.log(`[podcast] Wrote podcast-${it.id}.md`);
+    }
   }
   console.log(`Podcast sync complete. New files: ${created}`);
 }
