@@ -20,7 +20,7 @@ const path = require('path');
 const https = require('https');
 
 const USERNAME = process.env.SOUNDCLOUD_USERNAME || 'iancanderson';
-const FEED_URL = `https://soundcloud.com/${USERNAME}/tracks?format=rss`;
+const USER_ID = process.env.SOUNDCLOUD_USER_ID; // optional: numeric user id
 
 function get(url) {
   return new Promise((resolve, reject) => {
@@ -64,7 +64,7 @@ function parseItems(rss) {
     const pubDate = extract('pubDate', block) || new Date().toUTCString();
     const guid = extract('guid', block);
     let id = '';
-    const guidId = (guid.match(/soundcloud:tracks:(\d+)/i) || [])[1];
+    const guidId = (guid.match(/tracks:(\d+)/i) || [])[1];
     if (guidId) id = guidId;
     if (!id && link) {
       const slug = link.split('/').filter(Boolean).pop();
@@ -95,10 +95,28 @@ function writePostFile(item) {
   return true;
 }
 
+async function resolveUserId(username) {
+  if (USER_ID) return USER_ID;
+  const html = await get(`https://soundcloud.com/${username}`);
+  // Try several patterns found in SoundCloud pages
+  const patterns = [
+    /soundcloud:users:(\d+)/i,
+    /"user_id":\s*(\d+)/i,
+    /data-user-id=\"(\d+)\"/i,
+  ];
+  for (const re of patterns) {
+    const m = html.match(re);
+    if (m && m[1]) return m[1];
+  }
+  throw new Error('Unable to determine SoundCloud user id');
+}
+
 async function main() {
   const postsDir = path.join(process.cwd(), '_posts');
   if (!fs.existsSync(postsDir)) fs.mkdirSync(postsDir);
-  const rss = await get(FEED_URL);
+  const userId = await resolveUserId(USERNAME);
+  const feedUrl = `https://feeds.soundcloud.com/users/soundcloud:users:${userId}/sounds.rss`;
+  const rss = await get(feedUrl);
   const items = parseItems(rss);
   let created = 0;
   for (const it of items) {
@@ -111,4 +129,3 @@ main().catch((e) => {
   console.error('SoundCloud sync failed:', e.message);
   process.exit(1);
 });
-
