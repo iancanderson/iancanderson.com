@@ -30,17 +30,21 @@ jobs:
         with:
           path: |
             ${{ github.workspace }}/.next/cache
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('package.json', 'next.config.js', 'tsconfig.json', 'postcss.config.js', 'tailwind.config.js') }}
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
 
       - name: Build
+        env:
+          NEXT_TELEMETRY_DISABLED: "1"
         run: |
           npm ci --no-audit --no-fund
           npm run typecheck
           npm run build
-          npm run export
+          # Export and upload only for main pushes
+          if [ "${GITHUB_REF}" = "refs/heads/main" ]; then npm run export; fi
       - name: Upload production-ready build files
+        if: github.ref == 'refs/heads/main'
         uses: actions/upload-artifact@v4
         with:
           name: production-files
