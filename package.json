@@ -6,6 +6,7 @@
     "start": "next start",
     "typecheck": "tsc",
     "export": "next export",
+    "test:ssg": "node scripts/test-ssg.js",
     "sync:youtube": "node scripts/sync-youtube.js",
     "sync:soundcloud": "node scripts/sync-soundcloud.js",
     "sync:podcast": "node scripts/sync-podcast.js"

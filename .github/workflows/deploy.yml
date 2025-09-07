@@ -41,8 +41,9 @@ jobs:
           npm ci --no-audit --no-fund
           npm run typecheck
           npm run build
-          # Export and upload only for main pushes
-          if [ "${GITHUB_REF}" = "refs/heads/main" ]; then npm run export; fi
+          # Export always so tests can read from out/
+          npm run export
+          npm run test:ssg
       - name: Upload production-ready build files
         if: github.ref == 'refs/heads/main'
         uses: actions/upload-artifact@v4
