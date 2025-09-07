@@ -1,0 +1,10 @@
+---
+title: "4 - Zed is naught zero"
+date: "2016-02-06T22:00:00.000Z"
+type: podcast
+tags:
+  - podcast
+audioUrl: "https://episodes.hunchpig.audio/0004.mp3"
+summary: |
+  Ian and Matt cover perception vs reality, playing This War of Mine with a single character, listener feedback, the color orange, past tenses, pronouncing the Ts in buttermilk, Horace and Pete, the etymology of Television Show, the evolutionary need to watch horror movies, synesthesia, and bipolar disorder. They try the Vanilla Bourbon Oak Stout again after it has been subjected to a warmer environment, hoping for better carbonation. Ian airs his greivances about lit open signs on businesses that are obviously closed, and they consider how constraints can help creativity. All three music clips in this episode were (very quickly) created and exported using Apple's new Music Memos app, with no other editing or processing. This episode was generously sponsored by http://music.twentyeightmusic.com. Contact us at http://twitter.com/hunchpig for sponsorship opportunities. Our next sponsorship is available for $8!
+---
