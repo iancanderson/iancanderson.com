@@ -5,6 +5,7 @@ import Intro from "../components/intro";
 import Layout from "../components/layout";
 import TagCloud from "../components/tag-cloud";
 import CalendarTimeline from "../components/calendar-timeline";
+import Collapsible from "../components/collapsible";
 import { getAllPosts } from "../lib/api";
 import Head from "next/head";
 import Post from "../types/post";
@@ -30,8 +31,12 @@ const Index = ({ allPosts }: Props) => {
         </Head>
         <Container>
           <Intro />
-          <TagCloud counts={tagCounts} />
-          <CalendarTimeline posts={allPosts.map(p => ({ slug: p.slug, date: p.date, tags: p.tags }))} />
+          <Collapsible title="Tags" defaultExpanded={false}>
+            <TagCloud counts={tagCounts} bare />
+          </Collapsible>
+          <Collapsible title="Timeline" defaultExpanded={false}>
+            <CalendarTimeline posts={allPosts.map(p => ({ slug: p.slug, date: p.date, tags: p.tags }))} bare hideTitle />
+          </Collapsible>
           {heroPost && (
             <HeroPost
               title={heroPost.title}
