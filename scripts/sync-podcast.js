@@ -5,7 +5,7 @@
   Default feed: https://hunchpig.audio/podcast.xml (override with PODCAST_FEED_URL)
 
   Each episode becomes: _posts/podcast-<id-or-slug>.md with frontmatter:
-    title, date (ISO), externalUrl (episode page or enclosure), tags: [podcast]
+    title, date (ISO), type: podcast, tags: [podcast], audioUrl (enclosure), summary (itunes:summary)
 
   Usage:
     node scripts/sync-podcast.js
@@ -75,34 +75,38 @@ function parseItems(rss) {
       const hrefMatch = block.match(/<link[^>]*?href=["']([^"']+)["'][^>]*\/>/i);
       if (hrefMatch) link = hrefMatch[1];
     }
-    // enclosure url fallback
-    if (!link) {
-      const encl = (block.match(/<enclosure[^>]*url=["']([^"']+)["'][^>]*>/i) || [])[1];
-      if (encl) link = encl;
-    }
+    // Capture enclosure URL (audio)
+    const audioUrl = (block.match(/<enclosure[^>]*url=["']([^"']+)["'][^>]*>/i) || [])[1] || '';
+    // Summary from itunes:summary
+    const rawSummary = extract('itunes:summary', block) || extract('description', block);
+    const summary = stripCdata(rawSummary);
     const guid = extract('guid', block);
     let id = '';
     const guidId = (String(guid).match(/([a-z0-9_-]{6,})$/i) || [])[1];
     if (guidId) id = guidId;
     if (!id && link) id = safeSlug(lastPathSegment(link));
-    items.push({ id, title, link, pubDate });
+    items.push({ id, title, link, pubDate, audioUrl, summary });
   }
   return items;
 }
 
 function writePostFile(item) {
-  const { id, title, link, pubDate } = item;
+  const { id, title, link, pubDate, audioUrl, summary } = item;
   if (!id) return false;
   const filename = path.join(process.cwd(), '_posts', `podcast-${id}.md`);
   if (fs.existsSync(filename)) return false;
   const dateIso = new Date(pubDate).toISOString();
+  const summaryLines = String(summary || '').replace(/\r\n/g, '\n').split('\n').map((l) => '  ' + l);
   const fm = [
     '---',
     `title: "${title}"`,
     `date: "${dateIso}"`,
-    link ? `externalUrl: "${link}"` : '',
+    'type: podcast',
     'tags:',
     '  - podcast',
+    (audioUrl ? `audioUrl: "${audioUrl}"` : ''),
+    (summary ? 'summary: |' : ''),
+    ...(summary ? summaryLines : []),
     '---',
     '',
   ].filter(Boolean).join('\n');
@@ -126,4 +130,3 @@ main().catch((e) => {
   console.error('Podcast sync failed:', e.message);
   process.exit(1);
 });
-

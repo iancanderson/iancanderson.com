@@ -1,1 +1,1 @@
-export type PostKind = 'article' | 'video' | 'music';
+export type PostKind = 'article' | 'video' | 'music' | 'podcast';
