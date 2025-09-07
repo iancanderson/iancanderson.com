@@ -7,7 +7,8 @@
     "typecheck": "tsc",
     "export": "next export",
     "sync:youtube": "node scripts/sync-youtube.js",
-    "sync:soundcloud": "node scripts/sync-soundcloud.js"
+    "sync:soundcloud": "node scripts/sync-soundcloud.js",
+    "sync:podcast": "node scripts/sync-podcast.js"
   },
   "dependencies": {
     "classnames": "2.3.1",
