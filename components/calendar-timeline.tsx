@@ -186,7 +186,7 @@ export default function CalendarTimeline({ posts, selectedDate }: Props) {
   }, [weeks, trackWidth]);
 
   return (
-    <div className="mb-10 bg-[color:var(--brutal-card)] p-3 text-[color:var(--brutal-fg)]">
+    <div className="mb-10 brutal-border bg-[color:var(--brutal-card)] p-3 text-[color:var(--brutal-fg)]">
       <div className="flex items-center justify-between mb-3">
         <h2 className="text-xl font-extrabold">Timeline</h2>
         <div className="text-sm">
