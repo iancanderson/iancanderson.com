@@ -55,6 +55,36 @@ function sanitizeTitle(t) {
   return t.replace(/"/g, '\\"');
 }
 
+function safeSlug(s) {
+  return s
+    .toLowerCase()
+    .replace(/[^a-z0-9-_]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+function lastPathSegment(url) {
+  try {
+    const u = new URL(url);
+    const parts = u.pathname.split('/').filter(Boolean);
+    return parts.pop() || '';
+  } catch (_) {
+    const parts = String(url).split('?')[0].split('/').filter(Boolean);
+    return parts.pop() || '';
+  }
+}
+
+function parseTrackId(guid, link, block) {
+  const sources = [guid, link, block];
+  for (const src of sources) {
+    if (!src) continue;
+    const m = String(src).match(/tracks[:\/]([0-9]+)/i);
+    if (m) return m[1];
+  }
+  const seg = lastPathSegment(link || '');
+  if (seg) return safeSlug(seg);
+  return '';
+}
+
 function parseItems(rss) {
   const items = [];
   const parts = rss.split(/<item>/i).slice(1); // skip header
@@ -65,13 +95,7 @@ function parseItems(rss) {
     const link = stripCdata(extract('link', block));
     const pubDate = extract('pubDate', block) || new Date().toUTCString();
     const guid = extract('guid', block);
-    let id = '';
-    const guidId = (guid.match(/tracks:(\d+)/i) || [])[1];
-    if (guidId) id = guidId;
-    if (!id && link) {
-      const slug = link.split('/').filter(Boolean).pop();
-      id = slug || String(Date.now());
-    }
+    const id = parseTrackId(guid, link, block);
     items.push({ id, title, link, pubDate });
   }
   return items;
@@ -79,6 +103,7 @@ function parseItems(rss) {
 
 function writePostFile(item) {
   const { id, title, link, pubDate } = item;
+  if (!id) return false;
   const filename = path.join(process.cwd(), '_posts', `soundcloud-${id}.md`);
   if (fs.existsSync(filename)) return false;
   const dateIso = new Date(pubDate).toISOString();
