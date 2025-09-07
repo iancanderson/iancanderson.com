@@ -1,6 +1,5 @@
 export const TAG_EMOJI: Record<string, string> = {
   software: "💻",
-  programming: "💻",
   investing: "📈",
   music: "🎵",
   video: "🎬",

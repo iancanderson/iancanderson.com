@@ -16,7 +16,7 @@ type Props = {
   hideTitle?: boolean;
 };
 
-const PRIORITY: string[] = ["music", "software", "programming", "video", "podcast", "homebrewing", "investing"];
+const PRIORITY: string[] = ["music", "software", "video", "podcast", "homebrewing", "investing"];
 
 function toDateKey(iso: string): string {
   // Normalize to YYYY-MM-DD in UTC
