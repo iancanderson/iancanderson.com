@@ -17,6 +17,13 @@ function parseISO(d: string) {
 }
 
 export default function PostTimeline({ posts }: Props) {
+  function formatDateUTC(iso: string): string {
+    const d = new Date(iso);
+    const y = d.getUTCFullYear();
+    const m = String(d.getUTCMonth() + 1).padStart(2, '0');
+    const day = String(d.getUTCDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+  }
   const data = useMemo(() => {
     const ps = posts
       .filter((p) => p.date)
@@ -98,11 +105,11 @@ export default function PostTimeline({ posts }: Props) {
             <div key={p.slug} className="absolute" style={{ left: `${left}%`, top: 70 }}>
               <div className="flex flex-col items-center gap-1">
                 {tags.map((t: string, idx: number) => (
-                  <Link key={t + idx} as={`/posts/${p.slug}`} href="/posts/[slug]">
+                  <Link key={t + idx} as={`/posts/${p.slug}`} href="/posts/[slug]" legacyBehavior>
                     <a
                       className="hover:scale-110 transition-transform"
-                      title={`#${t} – ${new Date(p.date).toDateString()}`}
-                      aria-label={`${t} post on ${new Date(p.date).toDateString()}`}
+                      title={`#${t} – ${formatDateUTC(p.date)}`}
+                      aria-label={`${t} post on ${formatDateUTC(p.date)}`}
                     >
                       <span style={{ fontSize: 18, lineHeight: 1 }}>{emojiForTag(t)}</span>
                     </a>

@@ -120,7 +120,7 @@ export default function CalendarTimeline({ posts, selectedDate, bare = false, hi
     if (info) {
       const href = `/day/${key}`;
       return (
-        <Link key={key} href={href}>
+        <Link key={key} href={href} legacyBehavior>
           <a title={title} className={clsBase} style={styleBase}>{content}</a>
         </Link>
       );
