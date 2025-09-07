@@ -18,24 +18,51 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const zlib = require('zlib');
 
 const USERNAME = process.env.SOUNDCLOUD_USERNAME || 'iancanderson';
 const USER_ID = process.env.SOUNDCLOUD_USER_ID; // optional: numeric user id
 
 function get(url) {
   return new Promise((resolve, reject) => {
-    https
-      .get(url, (res) => {
-        let data = '';
-        res.on('data', (c) => (data += c));
-        res.on('end', () => {
-          if (res.statusCode && res.statusCode >= 400) {
-            return reject(new Error(`HTTP ${res.statusCode}: ${data}`));
+    const req = https.get(
+      url,
+      {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0 Safari/537.36',
+          'Accept': 'application/rss+xml, application/xml;q=0.9, text/xml;q=0.8, */*;q=0.5',
+          'Accept-Encoding': 'gzip, deflate, br',
+        },
+      },
+      (res) => {
+        const status = res.statusCode || 0;
+        const enc = String(res.headers['content-encoding'] || '').toLowerCase();
+        let stream = res;
+        try {
+          if (enc.includes('br') && zlib.createBrotliDecompress) {
+            stream = res.pipe(zlib.createBrotliDecompress());
+          } else if (enc.includes('gzip')) {
+            stream = res.pipe(zlib.createGunzip());
+          } else if (enc.includes('deflate')) {
+            stream = res.pipe(zlib.createInflate());
           }
-          resolve(data);
+        } catch (_) {
+          // if decompression fails, fall back to raw stream
+          stream = res;
+        }
+
+        const chunks = [];
+        stream.on('data', (c) => chunks.push(Buffer.isBuffer(c) ? c : Buffer.from(c)));
+        stream.on('end', () => {
+          const body = Buffer.concat(chunks).toString('utf8');
+          if (status >= 400) {
+            return reject(new Error(`HTTP ${status}: ${body.slice(0, 200)}`));
+          }
+          resolve(body);
         });
-      })
-      .on('error', reject);
+      }
+    );
+    req.on('error', reject);
   });
 }
 
@@ -145,6 +172,10 @@ async function main() {
     console.log(`[soundcloud] Legacy RSS length: ${rss.length}`);
     items = parseItems(rss);
     console.log(`[soundcloud] Parsed items (legacy): ${items.length}`);
+    if (items.length === 0) {
+      console.log('[soundcloud] Feed preview (first 400 chars):');
+      console.log(rss.slice(0, 400));
+    }
   }
   let created = 0;
   for (const it of items) {
