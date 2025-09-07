@@ -15,6 +15,9 @@
   --brutal-shadow: #000000;
   --brutal-tag-bg: #fde68a; /* amber-300 */
   --brutal-tag-fg: #111827;
+  /* Accessible, fun link colors (violet) */
+  --brutal-link: #6d28d9; /* violet-700 */
+  --brutal-link-hover: #7c3aed; /* violet-600 */
 }
 
 /* Theme 2: lime wash + sky/red accents */
@@ -28,6 +31,8 @@
   --brutal-shadow: #000000;
   --brutal-tag-bg: #fef08a; /* yellow-300 */
   --brutal-tag-fg: #0f172a;
+  --brutal-link: #6d28d9; /* keep link consistent across themes */
+  --brutal-link-hover: #7c3aed;
 }
 
 /* Theme 3: slate wash + green/amber accents */
@@ -41,6 +46,8 @@
   --brutal-shadow: #000000;
   --brutal-tag-bg: #d1fae5; /* emerald-100 */
   --brutal-tag-fg: #022c22;
+  --brutal-link: #6d28d9;
+  --brutal-link-hover: #7c3aed;
 }
 
 /* Theme 4 (dark): near-black + yellow/cyan accents */
@@ -54,6 +61,8 @@
   --brutal-shadow: #ffffff;
   --brutal-tag-bg: #222222;
   --brutal-tag-fg: #f5f5f5;
+  --brutal-link: #a78bfa; /* violet-300 for dark bg */
+  --brutal-link-hover: #c4b5fd; /* violet-200 */
 }
 
 /* Utilities */
@@ -61,9 +70,9 @@
 .brutal-button {
   @apply brutal-border bg-[color:var(--brutal-accent)] text-white px-4 py-2 font-bold uppercase tracking-wide;
 }
-.brutal-link {
-  @apply underline decoration-4 decoration-[color:var(--brutal-accent)] hover:decoration-[color:var(--brutal-accent-2)];
-}
+.brutal-link { @apply underline decoration-4; }
+.brutal-link { text-decoration-color: var(--brutal-link); }
+.brutal-link:hover { text-decoration-color: var(--brutal-link-hover); }
 .brutal-tag { display:inline-block; margin-right:0.5rem; margin-bottom:0.5rem; padding:0.125rem 0.5rem; font-size:0.75rem; background: var(--brutal-tag-bg); color: var(--brutal-tag-fg); }
 
 /* Fun chip for tag cloud */
@@ -104,8 +113,14 @@
   .brutal-chip:hover .chip-emoji { transform: none; }
 }
 
-/* Page background */
+/* Base colors & links */
 body {
   background: var(--brutal-bg);
   color: var(--brutal-fg);
 }
+/* Ensure default links have sufficient contrast on all themes */
+a { color: var(--brutal-link); }
+a:hover { color: var(--brutal-link-hover); }
+
+/* Keep chips using foreground color, not link color */
+.brutal-chip { color: var(--brutal-fg); }
