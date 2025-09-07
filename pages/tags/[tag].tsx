@@ -4,6 +4,7 @@ import Container from "../../components/container";
 import Layout from "../../components/layout";
 import Intro from "../../components/intro";
 import MoreStories from "../../components/more-stories";
+import { emojiForTag, colorClassForTag } from "../../lib/tags";
 import { getAllPosts } from "../../lib/api";
 import Post from "../../types/post";
 
@@ -16,15 +17,7 @@ export default function TagPage({ tag, posts }: Props) {
   const sorted = posts.sort((a, b) => (a.date > b.date ? -1 : 1));
   const count = sorted.length;
   const noun = count === 1 ? 'post' : 'posts';
-  const EMOJI: Record<string, string> = {
-    software: "💻",
-    investing: "📈",
-    music: "🎵",
-    video: "🎬",
-    homebrewing: "🍺",
-  };
-  const emojiFor = (t: string) => EMOJI[t.toLowerCase()] || "🏷️";
-  const colorClass = (t: string) => (EMOJI[t.toLowerCase()] ? `chip-${t.toLowerCase()}` : '');
+  
   return (
     <Layout>
       <Head>
@@ -34,8 +27,8 @@ export default function TagPage({ tag, posts }: Props) {
         <Intro />
         <h1 className="text-2xl font-semibold mb-8 flex items-center gap-3">
           <span>{count} {noun} tagged with</span>
-          <span className={`brutal-chip is-active ${colorClass(tag)} inline-flex items-center gap-2 px-2 py-1`}>
-            <span className="chip-emoji" aria-hidden>{emojiFor(tag)}</span>
+          <span className={`brutal-chip is-active ${colorClassForTag(tag)} inline-flex items-center gap-2 px-2 py-1`}>
+            <span className="chip-emoji" aria-hidden>{emojiForTag(tag)}</span>
             <span>#{tag}</span>
           </span>
         </h1>
