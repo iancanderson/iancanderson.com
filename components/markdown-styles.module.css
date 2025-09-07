@@ -18,7 +18,11 @@
 }
 
 .markdown a {
-  @apply text-green-600 hover:underline;
+  @apply hover:underline;
+  color: var(--brutal-link);
+}
+.markdown a:hover {
+  color: var(--brutal-link-hover);
 }
 
 .markdown ul {
