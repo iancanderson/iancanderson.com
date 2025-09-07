@@ -56,6 +56,20 @@ const Post = ({ post, morePosts, preview }: Props) => {
                   </div>
                 </div>
               ) : null}
+              {post.type === 'music' && (post as any).soundcloudUrl ? (
+                <div className="mb-8">
+                  <div style={{ position: 'relative', paddingBottom: '166px', height: 0 }}>
+                    <iframe
+                      title={post.title}
+                      allow="autoplay"
+                      scrolling="no"
+                      frameBorder="no"
+                      src={`https://w.soundcloud.com/player/?url=${encodeURIComponent((post as any).soundcloudUrl)}&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true`}
+                      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '166px', border: 0 }}
+                    />
+                  </div>
+                </div>
+              ) : null}
               {post.type === 'video' && (post as any).videoDescription && (
                 <p className="mb-6 text-base">{(post as any).videoDescription}</p>
               )}
@@ -91,6 +105,7 @@ export async function getStaticProps({ params }: Params) {
     "type",
     "youtubeId",
     "videoDescription",
+    "soundcloudUrl",
   ]);
   const mdxSource = await serialize(post.content, {
     mdxOptions: {

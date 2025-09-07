@@ -7,10 +7,11 @@ type PostType = {
   date: string;
   content: MDXRemoteSerializeResult<Record<string, unknown>>;
   externalUrl: string;
-  type?: PostKind; // 'article' | 'video'
+  type?: PostKind; // 'article' | 'video' | 'music'
   youtubeId?: string;
   videoDescription?: string;
   tags?: string[];
+  soundcloudUrl?: string;
 };
 
 export default PostType;
