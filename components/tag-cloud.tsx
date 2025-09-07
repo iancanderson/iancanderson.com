@@ -1,26 +1,11 @@
 import Link from "next/link";
+import { emojiForTag, colorClassForTag } from "../lib/tags";
 
 type Props = {
   counts: Record<string, number>;
 };
 
-const EMOJI: Record<string, string> = {
-  software: "💻",
-  investing: "📈",
-  music: "🎵",
-  video: "🎬",
-  homebrewing: "🍺",
-};
-
-function emojiFor(tag: string) {
-  return EMOJI[tag.toLowerCase()] || "🏷️";
-}
-
-function colorClass(tag: string) {
-  const t = tag.toLowerCase();
-  if (t in EMOJI) return `chip-${t}`;
-  return '';
-}
+// tag helpers centralized in lib/tags
 
 const TagCloud = ({ counts }: Props) => {
   const entries = Object.entries(counts);
@@ -43,8 +28,8 @@ const TagCloud = ({ counts }: Props) => {
       <div className="flex flex-wrap">
         {sorted.map(([tag, n]) => (
           <Link key={tag} href={`/tags/${tag}`}>
-            <a className={`brutal-chip ${colorClass(tag)} inline-flex items-center gap-2 mr-3 mb-2 px-2 py-1 ${weightFor(n)}`}>
-              <span className="chip-emoji" aria-hidden>{emojiFor(tag)}</span>
+            <a className={`brutal-chip ${colorClassForTag(tag)} inline-flex items-center gap-2 mr-3 mb-2 px-2 py-1 ${weightFor(n)}`}>
+              <span className="chip-emoji" aria-hidden>{emojiForTag(tag)}</span>
               <span>#{tag}</span>
             </a>
           </Link>
