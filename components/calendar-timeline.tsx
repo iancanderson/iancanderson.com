@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import type { CSSProperties } from "react";
 import { emojiForTag } from "../lib/tags";
 
 type PostLite = {
@@ -92,16 +93,6 @@ export default function CalendarTimeline({ posts, selectedDate }: Props) {
 
   if (!year) return null;
 
-  const startWeek = startOfWeekSundayUTC(startOfYearUTC(year));
-  const end = endOfYearUTC(year);
-  // compute number of weeks to cover the year fully
-  let weeks = 0;
-  let iter = startWeek;
-  while (iter <= end) {
-    weeks += 1;
-    iter = addDays(iter, 7);
-  }
-
   const daySquare = 18; // px
   const gap = 3; // px
 
@@ -116,11 +107,11 @@ export default function CalendarTimeline({ posts, selectedDate }: Props) {
     }
     const title = `${key}${info ? ` • ${info.slugs.length} post(s)` : ""}`;
     const clsBase = `flex items-center justify-center ${info ? 'border border-gray-500/60' : 'border border-gray-400/30'} ${selectedDate === key ? 'ring-1 ring-offset-1 ring-[color:var(--brutal-fg)]' : ''}`;
-    const styleBase = {
+    const styleBase: CSSProperties = {
       width: daySquare,
       height: daySquare,
       opacity: inYear ? 1 : 0.08,
-    } as React.CSSProperties;
+    };
     const content = <span className="text-gray-700" style={{ fontSize: 13, lineHeight: 1 }}>{emoji || ''}</span>;
     if (info) {
       const href = `/day/${key}`;
@@ -137,23 +128,65 @@ export default function CalendarTimeline({ posts, selectedDate }: Props) {
     );
   }
 
-  const weeksCols = [] as JSX.Element[];
-  let colStart = startWeek;
-  for (let w = 0; w < weeks; w++) {
-    const daysCol = [] as JSX.Element[];
+  // Full-year horizontal grid and month markers
+  const y = year as number;
+  const msWeek = 7 * 24 * 60 * 60 * 1000;
+  const yearStartWeek = startOfWeekSundayUTC(startOfYearUTC(y));
+  const yearEnd = endOfYearUTC(y);
+  let weeks = 0;
+  for (let t = yearStartWeek; t <= yearEnd; t = addDays(t, 7)) weeks += 1;
+  const trackWidth = weeks * daySquare + (weeks - 1) * gap;
+  const labelHeight = 18; // px
+  const trackHeight = labelHeight + 7 * daySquare + 6 * gap;
+
+  const monthTicks = useMemo(() => {
+    const ticks: { label: string; left: number }[] = [];
+    const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    for (let m = 0; m < 12; m++) {
+      const mStart = Date.UTC(y, m, 1);
+      const mWeek = startOfWeekSundayUTC(mStart);
+      const weeksFromStart = Math.floor((mWeek - yearStartWeek) / msWeek);
+      const left = weeksFromStart * (daySquare + gap);
+      ticks.push({ label: labels[m], left });
+    }
+    return ticks;
+  }, [y, yearStartWeek]);
+
+  const weeksCols: JSX.Element[] = [];
+  for (let w = 0, t = yearStartWeek; w < weeks; w++, t = addDays(t, 7)) {
+    const daysCol: JSX.Element[] = [];
     for (let d = 0; d < 7; d++) {
-      daysCol.push(renderDay(addDays(colStart, d)));
+      daysCol.push(renderDay(addDays(t, d)));
     }
     weeksCols.push(
-      <div key={w} className="flex flex-col" style={{ gap }}>
+      <div key={`w-${w}`} className="flex flex-col" style={{ gap }}>
         {daysCol}
       </div>
     );
-    colStart = addDays(colStart, 7);
   }
 
+  // Scroll fade indicators
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [fadeL, setFadeL] = useState(false);
+  const [fadeR, setFadeR] = useState(false);
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const update = () => {
+      setFadeL(el.scrollLeft > 0);
+      setFadeR(el.scrollLeft + el.clientWidth < el.scrollWidth - 1);
+    };
+    update();
+    el.addEventListener('scroll', update);
+    window.addEventListener('resize', update);
+    return () => {
+      el.removeEventListener('scroll', update);
+      window.removeEventListener('resize', update);
+    };
+  }, [weeks, trackWidth]);
+
   return (
-    <div className="mb-10 brutal-border bg-[color:var(--brutal-card)] p-3 text-[color:var(--brutal-fg)]">
+    <div className="mb-10 bg-[color:var(--brutal-card)] p-3 text-[color:var(--brutal-fg)]">
       <div className="flex items-center justify-between mb-3">
         <h2 className="text-xl font-extrabold">Timeline</h2>
         <div className="text-sm">
@@ -174,8 +207,21 @@ export default function CalendarTimeline({ posts, selectedDate }: Props) {
           ))}
         </div>
       </div>
-      <div className="flex" style={{ gap }}>
-        {weeksCols}
+      <div ref={containerRef} className="relative overflow-x-auto bg-[color:var(--brutal-card)]" style={{ height: trackHeight }}>
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-8" style={{ opacity: fadeL ? 1 : 0, transition: 'opacity 150ms', background: 'linear-gradient(to right, var(--brutal-card), rgba(0,0,0,0))' }} />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-8" style={{ opacity: fadeR ? 1 : 0, transition: 'opacity 150ms', background: 'linear-gradient(to left, var(--brutal-card), rgba(0,0,0,0))' }} />
+        <div className="relative" style={{ width: trackWidth, height: trackHeight }}>
+          {monthTicks.map((t) => (
+            <div key={t.label} className="absolute top-[2px] text-[10px] text-gray-600" style={{ left: t.left }}>
+              {t.label}
+            </div>
+          ))}
+          <div className="absolute" style={{ top: labelHeight }}>
+            <div className="flex" style={{ gap }}>
+              {weeksCols}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
