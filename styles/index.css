@@ -95,6 +95,8 @@
 .chip-music { --chip-color-rgb: 236, 72, 153; } /* pink-500 */
 .chip-video { --chip-color-rgb: 239, 68, 68; } /* red-500 */
 .chip-homebrewing { --chip-color-rgb: 245, 158, 11; } /* amber-500 */
+.chip-podcast { --chip-color-rgb: 139, 92, 246; } /* violet-500 */
+.chip-programming { --chip-color-rgb: 59, 130, 246; } /* blue-500 (same as software) */
 
 @media (prefers-reduced-motion: reduce) {
   .brutal-chip, .brutal-chip .chip-emoji { transition: none !important; }

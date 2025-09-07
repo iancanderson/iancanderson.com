@@ -12,6 +12,8 @@ type PostLite = {
 type Props = {
   posts: PostLite[];
   selectedDate?: string; // YYYY-MM-DD
+  bare?: boolean;
+  hideTitle?: boolean;
 };
 
 const PRIORITY: string[] = ["music", "software", "programming", "video", "podcast", "homebrewing", "investing"];
@@ -48,21 +50,21 @@ function addDays(ts: number, days: number): number {
   return ts + days * 24 * 60 * 60 * 1000;
 }
 
-function pickEmoji(tags: string[]): string | null {
-  if (!tags || tags.length === 0) return null;
+function pickEmojiTag(tags: string[]): { emoji: string | null; tag?: string } {
+  if (!tags || tags.length === 0) return { emoji: null };
   const lower = tags.map((t) => t.toLowerCase());
   for (const t of PRIORITY) {
-    if (lower.includes(t)) return emojiForTag(t);
+    if (lower.includes(t)) return { emoji: emojiForTag(t), tag: t };
   }
   // fallback to first known tag with emoji
   for (const t of lower) {
     const e = emojiForTag(t);
-    if (e && e !== "🏷️") return e;
+    if (e && e !== "🏷️") return { emoji: e, tag: t };
   }
-  return null;
+  return { emoji: null };
 }
 
-export default function CalendarTimeline({ posts, selectedDate }: Props) {
+export default function CalendarTimeline({ posts, selectedDate, bare = false, hideTitle = false }: Props) {
   const map = useMemo(() => {
     const m = new Map<string, { slugs: string[]; tags: Set<string> }>();
     posts.forEach((p) => {
@@ -101,18 +103,20 @@ export default function CalendarTimeline({ posts, selectedDate }: Props) {
     const key = toDateKey(d.toISOString());
     const info = map.get(key);
     const inYear = d.getUTCFullYear() === year;
-    let emoji: string | null = null;
+    let chosen: { emoji: string | null; tag?: string } = { emoji: null };
     if (info) {
-      emoji = pickEmoji(Array.from(info.tags));
+      chosen = pickEmojiTag(Array.from(info.tags));
     }
     const title = `${key}${info ? ` • ${info.slugs.length} post(s)` : ""}`;
-    const clsBase = `flex items-center justify-center ${info ? 'border border-gray-500/60' : 'border border-gray-400/30'} ${selectedDate === key ? 'ring-1 ring-offset-1 ring-[color:var(--brutal-fg)]' : ''}`;
+    const chipClass = chosen.tag ? `chip-${chosen.tag}` : '';
+    const clsBase = `flex items-center justify-center ${info ? 'border border-gray-500/60' : 'border border-gray-400/30'} ${selectedDate === key ? 'ring-1 ring-offset-1 ring-[color:var(--brutal-fg)]' : ''} ${chipClass}`;
     const styleBase: CSSProperties = {
       width: daySquare,
       height: daySquare,
       opacity: inYear ? 1 : 0.08,
+      backgroundColor: info ? 'rgba(var(--chip-color-rgb, 0,0,0), 0.12)' : undefined,
     };
-    const content = <span className="text-gray-700" style={{ fontSize: 13, lineHeight: 1 }}>{emoji || ''}</span>;
+    const content = <span className="text-gray-700" style={{ fontSize: 13, lineHeight: 1 }}>{chosen.emoji || ''}</span>;
     if (info) {
       const href = `/day/${key}`;
       return (
@@ -136,8 +140,10 @@ export default function CalendarTimeline({ posts, selectedDate }: Props) {
   let weeks = 0;
   for (let t = yearStartWeek; t <= yearEnd; t = addDays(t, 7)) weeks += 1;
   const trackWidth = weeks * daySquare + (weeks - 1) * gap;
-  const labelHeight = 18; // px
-  const trackHeight = labelHeight + 7 * daySquare + 6 * gap;
+  const yearsHeight = 24; // px
+  const labelHeight = 18; // px (month labels)
+  const gridTop = yearsHeight + labelHeight;
+  const trackHeight = gridTop + 7 * daySquare + 6 * gap;
 
   const monthTicks = useMemo(() => {
     const ticks: { label: string; left: number }[] = [];
@@ -185,44 +191,64 @@ export default function CalendarTimeline({ posts, selectedDate }: Props) {
     };
   }, [weeks, trackWidth]);
 
-  return (
-    <div className="mb-10 brutal-border bg-[color:var(--brutal-card)] p-3 text-[color:var(--brutal-fg)]">
-      <div className="flex items-center justify-between mb-3">
-        <h2 className="text-xl font-extrabold">Timeline</h2>
-        <div className="text-sm">
-          {years.map((y, idx) => (
-            <span key={y}>
-              <a
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setYear(y);
-                }}
-                className={y === year ? "font-extrabold" : "hover:underline"}
-              >
-                {y}
-              </a>
-              {idx < years.length - 1 ? <span className="mx-2">|</span> : null}
-            </span>
-          ))}
-        </div>
-      </div>
-      <div ref={containerRef} className="relative overflow-x-auto bg-[color:var(--brutal-card)]" style={{ height: trackHeight }}>
+  const header = (
+    <div className="flex items-center justify-between mb-3">
+      {!hideTitle && <h2 className="text-xl font-extrabold">Timeline</h2>}
+    </div>
+  );
+
+  const scroller = (
+    <div ref={containerRef} className="relative overflow-x-auto bg-[color:var(--brutal-card)]" style={{ height: trackHeight }}>
         <div className="pointer-events-none absolute inset-y-0 left-0 w-8" style={{ opacity: fadeL ? 1 : 0, transition: 'opacity 150ms', background: 'linear-gradient(to right, var(--brutal-card), rgba(0,0,0,0))' }} />
         <div className="pointer-events-none absolute inset-y-0 right-0 w-8" style={{ opacity: fadeR ? 1 : 0, transition: 'opacity 150ms', background: 'linear-gradient(to left, var(--brutal-card), rgba(0,0,0,0))' }} />
         <div className="relative" style={{ width: trackWidth, height: trackHeight }}>
+          {/* Years selector row inside scroller */}
+          <div className="absolute left-0 right-0" style={{ top: 0, height: yearsHeight }}>
+            <div className="inline-flex items-center text-sm gap-2">
+              {years.map((yy) => (
+                <a
+                  key={yy}
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setYear(yy);
+                  }}
+                  className={yy === year ? "font-extrabold" : "hover:underline"}
+                >
+                  {yy}
+                </a>
+              ))}
+            </div>
+          </div>
+          {/* Month labels */}
           {monthTicks.map((t) => (
-            <div key={t.label} className="absolute top-[2px] text-[10px] text-gray-600" style={{ left: t.left }}>
+            <div key={t.label} className="absolute text-[10px] text-gray-600" style={{ left: t.left, top: yearsHeight + 2 }}>
               {t.label}
             </div>
           ))}
-          <div className="absolute" style={{ top: labelHeight }}>
+          {/* Grid */}
+          <div className="absolute" style={{ top: gridTop }}>
             <div className="flex" style={{ gap }}>
               {weeksCols}
             </div>
           </div>
         </div>
       </div>
+  );
+
+  if (bare) {
+    return (
+      <div className="text-[color:var(--brutal-fg)]">
+        {header}
+        {scroller}
+      </div>
+    );
+  }
+
+  return (
+    <div className="mb-10 brutal-border bg-[color:var(--brutal-card)] p-3 text-[color:var(--brutal-fg)]">
+      {header}
+      {scroller}
     </div>
   );
 }
