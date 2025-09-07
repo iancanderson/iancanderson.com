@@ -40,7 +40,7 @@ function get(url) {
 }
 
 function extract(tag, xml) {
-  const re = new RegExp(`<${tag}>([\s\S]*?)<\/${tag}>`, 'i');
+  const re = new RegExp(`<${tag}[^>]*>([\s\S]*?)<\/${tag}>`, 'i');
   const m = xml.match(re);
   return m ? m[1].trim() : '';
 }
@@ -55,20 +55,36 @@ function sanitizeTitle(t) {
 
 function parseItems(rss) {
   const items = [];
-  const parts = rss.split(/<item>/i).slice(1); // skip header
-  for (const part of parts) {
-    const block = part.split(/<\/item>/i)[0];
+  const blocks = [];
+  const itemRe = /<item\b[\s\S]*?<\/item>/gi;
+  const entryRe = /<entry\b[\s\S]*?<\/entry>/gi;
+  let m;
+  while ((m = itemRe.exec(rss)) !== null) blocks.push(m[0]);
+  while ((m = entryRe.exec(rss)) !== null) blocks.push(m[0]);
+  console.log(`[soundcloud] Matched blocks: items=${rss.match(itemRe)?.length || 0} entries=${rss.match(entryRe)?.length || 0}`);
+
+  for (const block of blocks) {
     const rawTitle = extract('title', block);
     const title = sanitizeTitle(stripCdata(rawTitle));
-    const link = stripCdata(extract('link', block));
-    const pubDate = extract('pubDate', block) || new Date().toUTCString();
-    const guid = extract('guid', block);
+
+    // link: RSS <link>url</link> OR Atom <link href="url"/>
+    let link = stripCdata(extract('link', block));
+    if (!link) {
+      const hrefMatch = block.match(/<link[^>]*?href=["']([^"']+)["'][^>]*\/>/i);
+      if (hrefMatch) link = hrefMatch[1];
+    }
+
+    // date: RSS <pubDate> OR Atom <updated>
+    const pubDate = extract('pubDate', block) || extract('updated', block) || new Date().toUTCString();
+
+    const guid = extract('guid', block) || extract('id', block);
     let id = '';
     const guidId = (guid.match(/tracks:(\d+)/i) || [])[1];
     if (guidId) id = guidId;
     if (!id && link) {
-      const slug = link.split('/').filter(Boolean).pop();
-      id = slug || String(Date.now());
+      const parts = link.split('?')[0].split('/').filter(Boolean);
+      const last = parts[parts.length - 1];
+      id = last || '';
     }
     items.push({ id, title, link, pubDate });
   }
