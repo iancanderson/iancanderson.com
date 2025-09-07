@@ -1,5 +1,6 @@
 export const TAG_EMOJI: Record<string, string> = {
   software: "💻",
+  programming: "💻",
   investing: "📈",
   music: "🎵",
   video: "🎬",
@@ -18,4 +19,3 @@ export function colorClassForTag(tag?: string): string {
   const t = tag.toLowerCase();
   return TAG_EMOJI[t] ? `chip-${t}` : "";
 }
-

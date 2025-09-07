@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useMemo, useRef, useEffect } from "react";
+import { useMemo, useRef, useEffect, useState } from "react";
 import { emojiForTag } from "../lib/tags";
 
 type Post = {
@@ -17,82 +17,101 @@ function parseISO(d: string) {
 }
 
 export default function PostTimeline({ posts }: Props) {
-  const containerRef = useRef<HTMLDivElement | null>(null);
   const data = useMemo(() => {
     const ps = posts
       .filter((p) => p.date)
       .map((p) => ({ ...p, t: parseISO(p.date) }))
       .sort((a, b) => a.t - b.t);
-    if (ps.length === 0) return { items: [] as any[], minT: 0, maxT: 0 };
-    const minT = ps[0].t;
-    const maxT = ps[ps.length - 1].t;
-    return { items: ps, minT, maxT };
+    return ps;
   }, [posts]);
 
-  const pxPerDay = 1.2; // scale
-  const days = Math.max(1, (data.maxT - data.minT) / (1000 * 60 * 60 * 24));
-  const width = Math.max(800, Math.ceil(days * pxPerDay) + 60);
+  const yearsList = useMemo(() => {
+    const set = new Set<number>();
+    data.forEach((p) => set.add(new Date(p.t).getUTCFullYear()));
+    return Array.from(set).sort((a, b) => b - a);
+  }, [data]);
 
+  const [year, setYear] = useState<number | null>(yearsList[0] || null);
   useEffect(() => {
-    const el = containerRef.current;
-    if (el) el.scrollLeft = el.scrollWidth; // jump to latest
-  }, [width]);
+    if (yearsList.length && (year === null || !yearsList.includes(year))) setYear(yearsList[0]);
+  }, [yearsList]);
 
-  const posLeft = (dateISO: string) => {
+  if (!year) return null;
+
+  const items = data.filter((p) => new Date(p.t).getUTCFullYear() === year);
+  const startOfYear = Date.UTC(year, 0, 1);
+  const endOfYear = Date.UTC(year + 1, 0, 1) - 1;
+  const totalDays = Math.max(1, Math.round((endOfYear - startOfYear) / (1000 * 60 * 60 * 24)));
+
+  const pctLeft = (dateISO: string) => {
     const t = parseISO(dateISO);
-    return ((t - data.minT) / (1000 * 60 * 60 * 24)) * pxPerDay;
+    const days = Math.max(0, Math.min(totalDays, Math.round((t - startOfYear) / (1000 * 60 * 60 * 24))));
+    return (days / totalDays) * 100;
   };
 
-  const years: { year: number; left: number }[] = useMemo(() => {
-    if (!data.minT || !data.maxT) return [] as { year: number; left: number }[];
-    const y0 = new Date(data.minT).getUTCFullYear();
-    const y1 = new Date(data.maxT).getUTCFullYear();
-    const ts = [] as { year: number; left: number }[];
-    for (let y = y0; y <= y1; y++) {
-      const t = Date.UTC(y, 0, 1);
-      const days = (t - data.minT) / (1000 * 60 * 60 * 24);
-      ts.push({ year: y, left: days * pxPerDay });
+  const monthTicks = useMemo(() => {
+    const ticks: { label: string; left: number }[] = [];
+    const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    for (let m = 0; m < 12; m++) {
+      const t = Date.UTC(year, m, 1);
+      const days = Math.max(0, Math.min(totalDays, Math.round((t - startOfYear) / (1000 * 60 * 60 * 24))));
+      ticks.push({ label: labels[m], left: (days / totalDays) * 100 });
     }
-    return ts;
-  }, [data.minT, data.maxT]);
+    return ticks;
+  }, [year, totalDays, startOfYear]);
 
   return (
     <div className="mb-10 brutal-border bg-[color:var(--brutal-card)] p-3 text-[color:var(--brutal-fg)]">
-      <h2 className="text-xl mb-3 font-extrabold">Timeline</h2>
-      <div ref={containerRef} className="overflow-x-auto" style={{ height: 160 }}>
-        <div className="relative" style={{ width }}>
-          <div className="absolute left-0 right-0 top-1/2 border-t border-dashed border-gray-400/40" />
-          {/* Year ticks */}
-          {years.map((t: { year: number; left: number }) => (
-            <div key={t.year} className="absolute top-[10px] text-[10px] text-gray-600" style={{ left: t.left }}>
-              <div className="h-3 border-l border-gray-400/70" />
-              <div className="-ml-3 mt-1">{t.year}</div>
-            </div>
-          ))}
-          {/* Posts as stacks of emojis */}
-          {data.items.map((p) => {
-            const left = posLeft(p.date);
-            const tags = (p.tags || []).filter((t: string) => emojiForTag(t) !== "🏷️");
-            if (tags.length === 0) return null;
-            return (
-              <div key={p.slug} className="absolute" style={{ left, top: 70 }}>
-                <div className="flex flex-col items-center gap-1">
-                  {tags.map((t: string, idx: number) => (
-                    <Link key={t + idx} as={`/posts/${p.slug}`} href="/posts/[slug]">
-                      <a
-                        className="hover:scale-110 transition-transform"
-                        title={`#${t} – ${new Date(p.date).toDateString()}`}
-                        aria-label={`${t} post on ${new Date(p.date).toDateString()}`}
-                      >
-                        <span style={{ fontSize: 18, lineHeight: 1 }}>{emojiForTag(t)}</span>
-                      </a>
-                    </Link>
-                  ))}
-                </div>
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="text-xl font-extrabold">Timeline</h2>
+      </div>
+      <div className="text-sm mb-3">
+        {yearsList.map((y, idx) => (
+          <span key={y}>
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                setYear(y);
+              }}
+              className={y === year ? "font-extrabold" : "hover:underline"}
+            >
+              {y}
+            </a>
+            {idx < yearsList.length - 1 ? <span className="mx-2">|</span> : null}
+          </span>
+        ))}
+      </div>
+      <div className="relative" style={{ height: 160 }}>
+        <div className="absolute left-0 right-0 top-1/2 border-t border-dashed border-gray-400/40" />
+        {monthTicks.map((t) => (
+          <div key={t.label} className="absolute top-[10px] text-[10px] text-gray-600" style={{ left: `${t.left}%` }}>
+            <div className="h-3 border-l border-gray-400/70" />
+            <div className="-ml-3 mt-1">{t.label}</div>
+          </div>
+        ))}
+        {items.map((p) => {
+          const left = pctLeft(p.date);
+          const tags = (p.tags || []).filter((t: string) => emojiForTag(t) !== "🏷️");
+          if (tags.length === 0) return null;
+          return (
+            <div key={p.slug} className="absolute" style={{ left: `${left}%`, top: 70 }}>
+              <div className="flex flex-col items-center gap-1">
+                {tags.map((t: string, idx: number) => (
+                  <Link key={t + idx} as={`/posts/${p.slug}`} href="/posts/[slug]">
+                    <a
+                      className="hover:scale-110 transition-transform"
+                      title={`#${t} – ${new Date(p.date).toDateString()}`}
+                      aria-label={`${t} post on ${new Date(p.date).toDateString()}`}
+                    >
+                      <span style={{ fontSize: 18, lineHeight: 1 }}>{emojiForTag(t)}</span>
+                    </a>
+                  </Link>
+                ))}
               </div>
-            );
-          })}
-        </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
