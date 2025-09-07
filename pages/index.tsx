@@ -4,6 +4,7 @@ import HeroPost from "../components/hero-post";
 import Intro from "../components/intro";
 import Layout from "../components/layout";
 import TagCloud from "../components/tag-cloud";
+import PostTimeline from "../components/post-timeline";
 import { getAllPosts } from "../lib/api";
 import Head from "next/head";
 import Post from "../types/post";
@@ -30,6 +31,7 @@ const Index = ({ allPosts }: Props) => {
         <Container>
           <Intro />
           <TagCloud counts={tagCounts} />
+          <PostTimeline posts={allPosts.map(p => ({ slug: p.slug, date: p.date, tags: p.tags }))} />
           {heroPost && (
             <HeroPost
               title={heroPost.title}
