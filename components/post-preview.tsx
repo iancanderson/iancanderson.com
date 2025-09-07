@@ -16,7 +16,28 @@ type Props = {
 function summarize(s?: string, max = 140) {
   if (!s) return '';
   const clean = s.replace(/\s+/g, ' ').trim();
-  return clean.length > max ? clean.slice(0, max - 1) + '…' : clean;
+  // Use grapheme-aware slicing when available to avoid breaking emoji/ZWJ sequences
+  try {
+    // @ts-ignore Intl.Segmenter may not be in older TS libdom
+    const seg = typeof Intl !== 'undefined' && Intl.Segmenter ? new Intl.Segmenter('en', { granularity: 'grapheme' }) : null;
+    if (seg) {
+      const out: string[] = [];
+      let count = 0;
+      for (const { segment } of seg.segment(clean) as any) {
+        if (count + segment.length > max - 1) break;
+        out.push(segment);
+        count += segment.length;
+      }
+      const joined = out.join('');
+      return joined.length < clean.length ? joined + '…' : joined;
+    }
+  } catch {}
+  // Fallback: iterate code points to avoid splitting surrogate pairs
+  const codepoints = Array.from(clean);
+  if (codepoints.length > max - 1) {
+    return codepoints.slice(0, max - 1).join('') + '…';
+  }
+  return clean;
 }
 
 const PostPreview = ({ title, date, slug, externalUrl, isVideo, tags, videoDescription }: Props) => {
@@ -31,11 +52,13 @@ const PostPreview = ({ title, date, slug, externalUrl, isVideo, tags, videoDescr
       {Array.isArray(tags) && tags.length > 0 && (
         <div className="mb-2 text-sm">
           {tags.map((t) => (
-            <Link key={t} href={`/tags/${t}`}>
-              <a className={`brutal-chip ${colorClassForTag(t)} inline-flex items-center gap-2 mr-3 mb-2 px-2 py-1`}>
-                <span className="chip-emoji" aria-hidden>{emojiForTag(t)}</span>
-                <span>#{t}</span>
-              </a>
+            <Link
+              key={t}
+              href={`/tags/${t}`}
+              className={`brutal-chip ${colorClassForTag(t)} inline-flex items-center gap-2 mr-3 mb-2 px-2 py-1`}
+            >
+              <span className="chip-emoji" aria-hidden>{emojiForTag(t)}</span>
+              <span>#{t}</span>
             </Link>
           ))}
         </div>

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useState } from "react";
 
 type Props = {
   title: string;
@@ -9,8 +9,7 @@ type Props = {
 
 export default function Collapsible({ title, defaultExpanded = false, forcedExpanded, children }: Props) {
   const [expanded, setExpanded] = useState<boolean>(!!defaultExpanded);
-  const idRef = useRef<string>(`collapsible-${Math.random().toString(36).slice(2)}`);
-  const panelId = idRef.current;
+  const panelId = useId();
   const isExpanded = forcedExpanded ?? expanded;
 
   useEffect(() => {

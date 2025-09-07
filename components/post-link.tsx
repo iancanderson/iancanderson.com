@@ -9,15 +9,15 @@ type PostLinkProps = {
 const PostLink = ({ externalUrl, slug, title }: PostLinkProps) => {
   if (externalUrl) {
     return (
-      <Link href={externalUrl}>
-        <a className="hover:underline" target="_blank" rel="noopener noreferrer">{title}</a>
+      <Link href={externalUrl} className="hover:underline" target="_blank" rel="noopener noreferrer">
+        {title}
       </Link>
     );
   }
 
   return (
-    <Link as={`/posts/${slug}`} href="/posts/[slug]">
-      <a className="hover:underline">{title}</a>
+    <Link href={`/posts/${slug}`} className="hover:underline">
+      {title}
     </Link>
   );
 };
