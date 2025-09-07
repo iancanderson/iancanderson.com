@@ -2,7 +2,7 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import Container from "../../components/container";
 import Layout from "../../components/layout";
-import Intro from "../../components/intro";
+import Header from "../../components/header";
 import MoreStories from "../../components/more-stories";
 import { emojiForTag, colorClassForTag } from "../../lib/tags";
 import { getAllPosts } from "../../lib/api";
@@ -24,7 +24,7 @@ export default function TagPage({ tag, posts }: Props) {
         <title>Tag: {tag} | iancanderson</title>
       </Head>
       <Container>
-        <Intro />
+        <Header />
         <h1 className="text-2xl font-semibold mb-8 flex items-center gap-3">
           <span>{count} {noun} tagged with</span>
           <span className={`brutal-chip is-active ${colorClassForTag(tag)} inline-flex items-center gap-2 px-2 py-1`}>

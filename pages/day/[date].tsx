@@ -2,7 +2,7 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import Container from "../../components/container";
 import Layout from "../../components/layout";
-import Intro from "../../components/intro";
+import Header from "../../components/header";
 import MoreStories from "../../components/more-stories";
 import CalendarTimeline from "../../components/calendar-timeline";
 import { getAllPosts } from "../../lib/api";
@@ -27,7 +27,7 @@ export default function DayPage({ date, posts, allPosts }: Props) {
         <title>Day: {date} | iancanderson</title>
       </Head>
       <Container>
-        <Intro />
+        <Header />
         <h1 className="text-2xl font-semibold mb-4">{count} {noun} on {date}</h1>
         <CalendarTimeline posts={allPosts.map(p => ({ slug: p.slug, date: p.date, tags: p.tags }))} selectedDate={date} />
         {count > 0 ? (
@@ -53,4 +53,3 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const posts = all.filter((p) => toDateKey(p.date) === date);
   return { props: { date, posts, allPosts: all } };
 };
-
