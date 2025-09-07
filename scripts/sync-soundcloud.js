@@ -116,11 +116,34 @@ async function main() {
   if (!fs.existsSync(postsDir)) fs.mkdirSync(postsDir);
   const userId = await resolveUserId(USERNAME);
   const feedUrl = `https://feeds.soundcloud.com/users/soundcloud:users:${userId}/sounds.rss`;
-  const rss = await get(feedUrl);
-  const items = parseItems(rss);
+  console.log(`[soundcloud] Fetching RSS: ${feedUrl}`);
+  let rss = await get(feedUrl);
+  console.log(`[soundcloud] RSS length: ${rss.length}`);
+  let items = parseItems(rss);
+  console.log(`[soundcloud] Parsed items: ${items.length}`);
+  if (items.length === 0) {
+    // Fallback to legacy page RSS
+    const legacy = `https://soundcloud.com/${USERNAME}/tracks?format=rss`;
+    console.log(`[soundcloud] Falling back to: ${legacy}`);
+    rss = await get(legacy);
+    console.log(`[soundcloud] Legacy RSS length: ${rss.length}`);
+    items = parseItems(rss);
+    console.log(`[soundcloud] Parsed items (legacy): ${items.length}`);
+  }
   let created = 0;
   for (const it of items) {
-    if (writePostFile(it)) created += 1;
+    if (!it.id) {
+      console.log(`[soundcloud] Skip item with missing id: ${it.title}`);
+      continue;
+    }
+    console.log(`[soundcloud] Track id=${it.id} title="${it.title}" link=${it.link}`);
+    const wrote = writePostFile(it);
+    if (wrote) {
+      created += 1;
+      console.log(`[soundcloud] Wrote _posts/soundcloud-${it.id}.md`);
+    } else {
+      console.log(`[soundcloud] Skipped existing _posts/soundcloud-${it.id}.md`);
+    }
   }
   console.log(`SoundCloud sync complete. New files: ${created}`);
 }
