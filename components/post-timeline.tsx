@@ -70,7 +70,7 @@ export default function PostTimeline({ posts }: Props) {
   return (
     <div className="mb-10 brutal-border bg-[color:var(--brutal-card)] p-3 text-[color:var(--brutal-fg)]">
       <div className="flex items-center justify-between mb-3">
-        <h2 className="text-xl font-extrabold">Timeline</h2>
+        <h2 className="text-lg font-extrabold">Timeline</h2>
       </div>
       <div className="text-sm mb-3">
         {yearsList.map((y, idx) => (

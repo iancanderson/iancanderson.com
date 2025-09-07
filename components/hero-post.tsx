@@ -18,7 +18,7 @@ const HeroPost = ({ title, date, externalUrl, slug, isVideo, tags, videoDescript
     <section>
       <div className="mb-10">
         <div className="brutal-border bg-[color:var(--brutal-card)] p-5 text-[color:var(--brutal-fg)]">
-          <h3 className="mb-3 text-3xl lg:text-4xl leading-tight">
+          <h3 className="mb-3 text-2xl lg:text-3xl leading-tight">
             <PostLink externalUrl={externalUrl} title={title} slug={slug} />
           </h3>
           {isVideo && videoDescription && (

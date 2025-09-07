@@ -42,7 +42,7 @@ const TagCloud = ({ counts, bare = false }: Props) => {
 
   return (
     <div className="mb-10 brutal-border bg-[color:var(--brutal-card)] p-4 text-[color:var(--brutal-fg)]">
-      <h2 className="text-xl mb-3 font-extrabold">Tags</h2>
+      <h2 className="text-lg mb-3 font-extrabold">Tags</h2>
       {content}
     </div>
   );
