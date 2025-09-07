@@ -41,8 +41,7 @@ jobs:
           npm ci --no-audit --no-fund
           npm run typecheck
           npm run build
-          # Export and upload only for main pushes
-          if [ "${GITHUB_REF}" = "refs/heads/main" ]; then npm run export; fi
+          # With output: 'export', static files are in ./out after build
       - name: Upload production-ready build files
         if: github.ref == 'refs/heads/main'
         uses: actions/upload-artifact@v4

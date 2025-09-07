@@ -1,5 +1,10 @@
-module.exports = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  // Static HTML export (replaces `next export` from Next 14+)
+  output: 'export',
   images: {
-    loader: "custom",
+    loader: 'custom',
   },
 };
+
+module.exports = nextConfig;
