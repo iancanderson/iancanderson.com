@@ -38,6 +38,8 @@ const Layout = ({ preview, children }: Props) => {
           el.style.setProperty('--j-amp', `${amp}px`);
           const ring = Math.floor(Math.random() * 360);
           el.style.setProperty('--ring-rot', `${ring}deg`);
+          // 25% chance this card can wiggle
+          if (Math.random() < 0.25) el.classList.add('wiggly');
         });
       } catch {}
     };
@@ -46,7 +48,9 @@ const Layout = ({ preview, children }: Props) => {
     const onScrollEnhanced = () => {
       const cards = Array.from(document.querySelectorAll<HTMLElement>('.weird-card'));
       cards.forEach((el) => {
-        el.classList.add('settling');
+        if (el.classList.contains('wiggly')) {
+          el.classList.add('settling');
+        }
         const prev = settleTimers.get(el);
         if (prev) clearTimeout(prev);
         const settle = 220 + Math.floor(Math.random() * 900);
@@ -55,6 +59,15 @@ const Layout = ({ preview, children }: Props) => {
           settleTimers.delete(el);
         }, settle);
         settleTimers.set(el, id);
+        // Occasionally glitch out and then blink back
+        if (Math.random() < 0.22) {
+          el.classList.add('glitching');
+          setTimeout(() => {
+            el.classList.remove('glitching');
+            el.classList.add('blink-in');
+            setTimeout(() => el.classList.remove('blink-in'), 260);
+          }, 140 + Math.floor(Math.random() * 260));
+        }
       });
     };
     window.addEventListener('scroll', onScrollEnhanced, { passive: true });
