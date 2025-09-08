@@ -28,8 +28,8 @@ export default function DayPage({ date, posts, allPosts }: Props) {
       </Head>
       <Container>
         <Header />
-        <h1 className="text-2xl font-semibold mb-4">{count} {noun} on {date}</h1>
         <CalendarTimeline posts={allPosts.map(p => ({ slug: p.slug, date: p.date, tags: p.tags }))} selectedDate={date} />
+        <h1 className="text-2xl font-semibold mt-4 mb-4">{count} {noun} on {date}</h1>
         {count > 0 ? (
           <MoreStories posts={posts} />
         ) : (

@@ -1,7 +1,7 @@
 import Container from "../components/container";
 import MoreStories from "../components/more-stories";
 import HeroPost from "../components/hero-post";
-import Intro from "../components/intro";
+import Header from "../components/header";
 import Layout from "../components/layout";
 import CalendarTimeline from "../components/calendar-timeline";
 import { getAllPosts } from "../lib/api";
@@ -23,7 +23,7 @@ const Index = ({ allPosts }: Props) => {
           <title>iancanderson</title>
         </Head>
         <Container>
-          <Intro />
+          <Header />
           <CalendarTimeline posts={allPosts.map(p => ({ slug: p.slug, date: p.date, tags: p.tags }))} />
           {heroPost && (
             <HeroPost
