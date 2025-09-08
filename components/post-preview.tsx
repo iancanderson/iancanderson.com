@@ -42,7 +42,7 @@ function summarize(s?: string, max = 140) {
 
 const PostPreview = ({ title, date, slug, externalUrl, isVideo, tags, videoDescription }: Props) => {
   return (
-    <div className="brutal-border weird-card mood-ring p-4 text-[color:var(--brutal-fg)]">
+    <div className="brutal-border weird-card p-4 text-[color:var(--brutal-fg)]">
       <h3 className="text-xl mb-3 leading-snug">
         <PostLink externalUrl={externalUrl} title={title} slug={slug} />
       </h3>
