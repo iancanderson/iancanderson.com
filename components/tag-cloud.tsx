@@ -29,7 +29,7 @@ const TagCloud = ({ counts, bare = false }: Props) => {
         <Link
           key={tag}
           href={`/tags/${tag}`}
-          className={`brutal-chip ${colorClassForTag(tag)} inline-flex items-center gap-2 mr-3 mb-2 px-2 py-1 ${weightFor(n)}`}
+          className={`brutal-chip neon-chip ${colorClassForTag(tag)} inline-flex items-center gap-2 mr-3 mb-2 px-2 py-1 ${weightFor(n)}`}
         >
           <span className="chip-emoji" aria-hidden>{emojiForTag(tag)}</span>
           <span>#{tag}</span>

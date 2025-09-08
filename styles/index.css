@@ -65,6 +65,107 @@
   --brutal-link-hover: #c4b5fd; /* violet-200 */
 }
 
+/* WEIRD THEME — neon, playful, accessible */
+.theme-weird {
+  --brutal-bg: radial-gradient(1200px 800px at 10% -10%, #ffedd5 0%, transparent 40%),
+               radial-gradient(900px 700px at 110% 10%, #dbeafe 0%, transparent 42%),
+               radial-gradient(700px 500px at 30% 120%, #fce7f3 0%, transparent 45%),
+               #fffdf5;
+  --brutal-fg: #0f172a; /* slate-900 */
+  --brutal-accent: #ef4444; /* red-500 */
+  --brutal-accent-2: #22c55e; /* green-500 */
+  --brutal-card: #ffffff;
+  --brutal-border: #111827;
+  --brutal-shadow: #111827;
+  --brutal-tag-bg: #fef08a; /* yellow-300 */
+  --brutal-tag-fg: #111827;
+  --brutal-link: #6d28d9; /* violet-700 */
+  --brutal-link-hover: #7c3aed; /* violet-600 */
+}
+
+/* Funky utilities for weird theme */
+.weird-bg {
+  position: relative;
+  overflow: hidden;
+}
+.weird-bg:before,
+.weird-bg:after {
+  content: "";
+  position: absolute;
+  inset: -25%;
+  background: repeating-conic-gradient(from 0deg, rgba(255,99,132,.06) 0 20deg, transparent 20deg 40deg),
+              radial-gradient(800px 600px at 120% 10%, rgba(99,102,241,.08), transparent 55%);
+  animation: spin-slow 60s linear infinite;
+}
+.weird-bg:after { animation-direction: reverse; opacity: .7; }
+
+@keyframes spin-slow { to { transform: rotate(360deg); } }
+
+.glitch {
+  position: relative;
+  text-shadow: 1px 0 0 #ef4444, -1px 0 0 #22c55e;
+}
+.glitch:hover { animation: wiggle .18s ease-in-out 6; }
+@keyframes wiggle { 50% { transform: rotate(-0.6deg) translateY(-1px); } }
+
+.neon-chip:hover {
+  box-shadow: 0 0 0 2px rgba(var(--chip-color-rgb,0,0,0), .35), 0 0 24px rgba(var(--chip-color-rgb,0,0,0), .25);
+}
+
+/* Weird card frames (slight tilt, pattern fill) */
+.weird-card {
+  position: relative;
+  transform: rotate(-0.4deg);
+  transition: transform 140ms ease-in-out, box-shadow 140ms ease-in-out;
+  background: var(--brutal-card);
+}
+.weird-card:hover { transform: rotate(0deg); box-shadow: 6px 6px 0 0 var(--brutal-shadow); }
+.weird-card:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 3px dashed rgba(15, 23, 42, 0.18);
+  pointer-events: none;
+}
+
+/* Mood ring animated border around cards */
+.mood-ring { position: relative; }
+.mood-ring:before { content: none; display: none; }
+
+@keyframes ring-swing { }
+
+/* Scroll jiggle: cards wiggle while scrolling, then settle (intense + randomized) */
+@keyframes jiggle {
+  0%   { transform: rotate(calc(-1 * var(--j-rot, 1.2deg))) translateY(0); }
+  25%  { transform: rotate(calc( 0.5 * var(--j-rot, 1.2deg))) translateY(calc(-0.5 * var(--j-amp, 3px))); }
+  50%  { transform: rotate(var(--j-rot, 1.2deg)) translateY(calc(-1 * var(--j-amp, 3px))); }
+  75%  { transform: rotate(calc(-0.3 * var(--j-rot, 1.2deg))) translateY(calc(-0.25 * var(--j-amp, 3px))); }
+  100% { transform: rotate(calc(-1 * var(--j-rot, 1.2deg))) translateY(0); }
+}
+.is-scrolling .weird-card.wiggly,
+.weird-card.wiggly.settling {
+  animation: jiggle var(--j-duration, 240ms) ease-in-out infinite;
+  animation-delay: var(--j-delay, 0ms);
+}
+
+/* Glitch-out and blink-in effects (border only) */
+@keyframes glitch-border {
+  0% { opacity: .9; transform: translate(0,0) skew(0deg); }
+  25% { opacity: .3; transform: translate(2px,-1px) skew(2deg); }
+  50% { opacity: 0.2; transform: translate(-2px,1px) skew(-2deg); }
+  75% { opacity: .6; transform: translate(1px,-2px) skew(1deg); }
+  100% { opacity: .9; transform: translate(0,0) skew(0deg); }
+}
+.weird-card.glitching:after { animation: glitch-border 200ms steps(2) 1; }
+
+@keyframes border-blink { 0% { opacity: 0; } 40% { opacity: 1; } 70% { opacity: .4; } 100% { opacity: 1; } }
+.weird-card.blink-in:after { animation: border-blink 220ms ease-in-out 1; }
+
+/* Marquee scroller */
+.marquee { position: relative; overflow: hidden; white-space: nowrap; }
+.marquee span { display: inline-block; padding-left: 100%; animation: marquee 18s linear infinite; }
+@keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+
 /* Utilities */
 .brutal-border { border: 4px solid var(--brutal-border); box-shadow: 6px 6px 0 0 var(--brutal-shadow); }
 .brutal-button {

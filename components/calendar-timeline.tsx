@@ -222,7 +222,11 @@ export default function CalendarTimeline({ posts, selectedDate, bare = false, hi
           </div>
           {/* Month labels */}
           {monthTicks.map((t) => (
-            <div key={t.label} className="absolute text-[10px] text-gray-600" style={{ left: t.left, top: yearsHeight + 2 }}>
+            <div
+              key={t.label}
+              className="absolute text-[10px] font-extrabold"
+              style={{ left: t.left, top: yearsHeight + 2, color: 'var(--brutal-accent)' }}
+            >
               {t.label}
             </div>
           ))}
