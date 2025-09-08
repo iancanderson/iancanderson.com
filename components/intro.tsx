@@ -7,7 +7,11 @@ const Intro = () => {
         <Link href="/" className="hover:underline">iancanderson</Link>
       </h1>
       <h4 className="text-center md:text-left text-lg mt-5 md:pl-8">
-        programmer and musician
+        <Link href="/tags/software" className="brutal-link">programmer</Link>
+        <span className="mx-2">|</span>
+        <Link href="/tags/music" className="brutal-link">musician</Link>
+        <span className="mx-2">|</span>
+        <Link href="/tags/homebrewing" className="brutal-link">homebrewer</Link>
       </h4>
     </section>
   );
