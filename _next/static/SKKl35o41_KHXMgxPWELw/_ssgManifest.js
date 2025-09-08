@@ -1,0 +1,1 @@
+self.__SSG_MANIFEST=new Set(["\u002F","\u002Fday\u002F[date]","\u002Fposts\u002F[slug]","\u002Ftags\u002F[tag]","\u002Fyear\u002F[year]"]);self.__SSG_MANIFEST_CB&&self.__SSG_MANIFEST_CB()
