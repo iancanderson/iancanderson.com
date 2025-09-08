@@ -42,7 +42,7 @@ function summarize(s?: string, max = 140) {
 
 const PostPreview = ({ title, date, slug, externalUrl, isVideo, tags, videoDescription }: Props) => {
   return (
-    <div className="brutal-border bg-[color:var(--brutal-card)] p-4 text-[color:var(--brutal-fg)]">
+    <div className="brutal-border weird-card mood-ring p-4 text-[color:var(--brutal-fg)]">
       <h3 className="text-xl mb-3 leading-snug">
         <PostLink externalUrl={externalUrl} title={title} slug={slug} />
       </h3>
@@ -55,7 +55,7 @@ const PostPreview = ({ title, date, slug, externalUrl, isVideo, tags, videoDescr
             <Link
               key={t}
               href={`/tags/${t}`}
-              className={`brutal-chip ${colorClassForTag(t)} inline-flex items-center gap-2 mr-3 mb-2 px-2 py-1`}
+              className={`brutal-chip neon-chip ${colorClassForTag(t)} inline-flex items-center gap-2 mr-3 mb-2 px-2 py-1`}
             >
               <span className="chip-emoji" aria-hidden>{emojiForTag(t)}</span>
               <span>#{t}</span>

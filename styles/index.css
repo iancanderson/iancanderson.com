@@ -130,6 +130,29 @@
   pointer-events: none;
 }
 
+/* Mood ring animated border around cards */
+.mood-ring { position: relative; }
+.mood-ring:before {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  padding: 6px; /* border thickness */
+  border-radius: 4px;
+  background: conic-gradient(
+    from 0deg,
+    #ef4444 0deg, #f59e0b 60deg, #22c55e 120deg, #06b6d4 180deg, #8b5cf6 240deg, #ec4899 300deg, #ef4444 360deg
+  );
+  transform: rotate(var(--ring-rot, 0deg));
+  animation: spin-slow 20s linear infinite;
+  /* cut out the middle to show the card */
+  -webkit-mask: 
+    linear-gradient(#000 0 0) content-box, 
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+}
+.mood-ring:hover:before { filter: brightness(1.05); }
+
 /* Scroll jiggle: cards wiggle while scrolling, then settle (intense + randomized) */
 @keyframes jiggle {
   0%   { transform: rotate(calc(-1 * var(--j-rot, 1.2deg))) translateY(0); }
@@ -138,7 +161,8 @@
   75%  { transform: rotate(calc(-0.3 * var(--j-rot, 1.2deg))) translateY(calc(-0.25 * var(--j-amp, 3px))); }
   100% { transform: rotate(calc(-1 * var(--j-rot, 1.2deg))) translateY(0); }
 }
-.is-scrolling .weird-card {
+.is-scrolling .weird-card,
+.weird-card.settling {
   animation: jiggle var(--j-duration, 240ms) ease-in-out infinite;
   animation-delay: var(--j-delay, 0ms);
 }

@@ -36,12 +36,31 @@ const Layout = ({ preview, children }: Props) => {
           el.style.setProperty('--j-duration', `${duration}ms`);
           el.style.setProperty('--j-rot', `${rot}deg`);
           el.style.setProperty('--j-amp', `${amp}px`);
+          const ring = Math.floor(Math.random() * 360);
+          el.style.setProperty('--ring-rot', `${ring}deg`);
         });
       } catch {}
     };
     seedJiggle();
+    const settleTimers = new Map<HTMLElement, any>();
+    const onScrollEnhanced = () => {
+      const cards = Array.from(document.querySelectorAll<HTMLElement>('.weird-card'));
+      cards.forEach((el) => {
+        el.classList.add('settling');
+        const prev = settleTimers.get(el);
+        if (prev) clearTimeout(prev);
+        const settle = 220 + Math.floor(Math.random() * 900);
+        const id = setTimeout(() => {
+          el.classList.remove('settling');
+          settleTimers.delete(el);
+        }, settle);
+        settleTimers.set(el, id);
+      });
+    };
+    window.addEventListener('scroll', onScrollEnhanced, { passive: true });
     return () => {
       window.removeEventListener("scroll", onScroll as any);
+      window.removeEventListener('scroll', onScrollEnhanced as any);
       clearTimeout(t);
     };
   }, []);
