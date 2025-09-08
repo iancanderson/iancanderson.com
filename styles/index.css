@@ -70,9 +70,8 @@
 .brutal-button {
   @apply brutal-border bg-[color:var(--brutal-accent)] text-white px-4 py-2 font-bold uppercase tracking-wide;
 }
-.brutal-link { @apply underline decoration-4; }
-.brutal-link { text-decoration-color: var(--brutal-link); }
-.brutal-link:hover { text-decoration-color: var(--brutal-link-hover); }
+.brutal-link { text-decoration: none; text-decoration-color: var(--brutal-link); text-decoration-thickness: 4px; }
+.brutal-link:hover { text-decoration-line: underline; text-decoration-color: var(--brutal-link-hover); }
 .brutal-tag { display:inline-block; margin-right:0.5rem; margin-bottom:0.5rem; padding:0.125rem 0.5rem; font-size:0.75rem; background: var(--brutal-tag-bg); color: var(--brutal-tag-fg); }
 
 /* Fun chip for tag cloud */
