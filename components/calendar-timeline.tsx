@@ -14,6 +14,7 @@ type Props = {
   selectedDate?: string; // YYYY-MM-DD
   bare?: boolean;
   hideTitle?: boolean;
+  autoScrollOnMount?: boolean;
 };
 
 const PRIORITY: string[] = ["music", "software", "video", "podcast", "homebrewing", "investing"];
@@ -64,7 +65,7 @@ function pickEmojiTag(tags: string[]): { emoji: string | null; tag?: string } {
   return { emoji: null };
 }
 
-export default function CalendarTimeline({ posts, selectedDate, bare = false, hideTitle = false }: Props) {
+export default function CalendarTimeline({ posts, selectedDate, bare = false, hideTitle = false, autoScrollOnMount = false }: Props) {
   const map = useMemo(() => {
     const m = new Map<string, { slugs: string[]; tags: Set<string> }>();
     posts.forEach((p) => {
@@ -153,7 +154,8 @@ export default function CalendarTimeline({ posts, selectedDate, bare = false, hi
       const mWeek = startOfWeekSundayUTC(mStart);
       const weeksFromStart = Math.floor((mWeek - yearStartWeek) / msWeek);
       const left = weeksFromStart * (daySquare + gap);
-      ticks.push({ label: labels[m], left });
+      const y2 = String(y).slice(2);
+      ticks.push({ label: `${labels[m]} '${y2}` , left });
     }
     return ticks;
   }, [y, yearStartWeek]);
@@ -175,6 +177,7 @@ export default function CalendarTimeline({ posts, selectedDate, bare = false, hi
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [fadeL, setFadeL] = useState(false);
   const [fadeR, setFadeR] = useState(false);
+  const didAutoScrollRef = useRef(false);
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
@@ -190,6 +193,22 @@ export default function CalendarTimeline({ posts, selectedDate, bare = false, hi
       window.removeEventListener('resize', update);
     };
   }, [weeks, trackWidth]);
+
+  // Optionally (homepage only), on first mount and small screens, auto-scroll
+  // to the most recent activity so the calendar doesn't look empty.
+  useEffect(() => {
+    if (!autoScrollOnMount || didAutoScrollRef.current) return;
+    const el = containerRef.current;
+    if (!el) return;
+    const small = typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches;
+    if (!small) return;
+    const scrollTo = (x: number) => {
+      el.scrollLeft = Math.max(0, Math.min(x, el.scrollWidth - el.clientWidth));
+    };
+    // Right-align latest
+    requestAnimationFrame(() => scrollTo(el.scrollWidth - el.clientWidth));
+    didAutoScrollRef.current = true;
+  }, [autoScrollOnMount, trackWidth]);
 
   const header = (
     <div className="flex items-center justify-between mb-3">
