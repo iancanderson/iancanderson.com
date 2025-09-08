@@ -24,7 +24,7 @@ const Index = ({ allPosts }: Props) => {
         </Head>
         <Container>
           <Header />
-          <CalendarTimeline posts={allPosts.map(p => ({ slug: p.slug, date: p.date, tags: p.tags }))} />
+          <CalendarTimeline posts={allPosts.map(p => ({ slug: p.slug, date: p.date, tags: p.tags }))} autoScrollOnMount />
           {heroPost && (
             <HeroPost
               title={heroPost.title}
