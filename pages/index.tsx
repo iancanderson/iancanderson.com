@@ -27,9 +27,9 @@ const Index = ({ allPosts, currentYearPosts, currentYear }: Props) => {
           <title>iancanderson</title>
         </Head>
         <Container>
-          <Header headingLevel={1} />
+          <Header />
           <CalendarTimeline posts={allPosts.map(p => ({ slug: p.slug, date: p.date, tags: p.tags }))} autoScrollOnMount />
-          <h2 className="text-2xl font-semibold mt-4 mb-4">{count} {noun} in {currentYear}</h2>
+          <h1 className="text-2xl font-semibold mt-4 mb-4">{count} {noun} in {currentYear}</h1>
           {heroPost && (
             <HeroPost
               title={heroPost.title}

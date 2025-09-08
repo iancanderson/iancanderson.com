@@ -27,7 +27,7 @@ export default function YearPage({ year, posts, allPosts }: Props) {
         <title>Year: {year} | iancanderson</title>
       </Head>
       <Container>
-        <Header headingLevel={2} />
+        <Header />
         <CalendarTimeline 
           posts={allPosts.map(p => ({ slug: p.slug, date: p.date, tags: p.tags }))} 
           selectedDate={`${year}-01-01`}
