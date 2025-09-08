@@ -24,7 +24,7 @@ export default function TagPage({ tag, posts }: Props) {
         <title>Tag: {tag} | iancanderson</title>
       </Head>
       <Container>
-        <Header />
+        <Header headingLevel={2} />
         <h1 className="text-2xl font-semibold mb-8 flex items-center gap-3">
           <span>{count} {noun} tagged with</span>
           <span className={`brutal-chip is-active ${colorClassForTag(tag)} inline-flex items-center gap-2 px-2 py-1`}>

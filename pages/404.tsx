@@ -10,7 +10,7 @@ export default function Custom404() {
         <script type="text/javascript" src="/handle404.js"></script>
       </Head>
       <Container>
-        <Header />
+        <Header headingLevel={2} />
         <h1 className="text-2xl font-semibold mb-6">404 - Page Not Found</h1>
         <p>Sorry, we couldn&apos;t find that page.</p>
       </Container>

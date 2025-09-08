@@ -33,7 +33,7 @@ const Post = ({ post, morePosts, preview }: Props) => {
   return (
     <Layout preview={preview}>
       <Container>
-        <Header />
+        <Header headingLevel={2} />
         {router.isFallback ? (
           <PostTitle>Loading…</PostTitle>
         ) : (
