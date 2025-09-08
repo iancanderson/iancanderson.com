@@ -10,11 +10,15 @@ import Post from "../types/post";
 
 type Props = {
   allPosts: Post[];
+  currentYearPosts: Post[];
+  currentYear: number;
 };
 
-const Index = ({ allPosts }: Props) => {
-  const heroPost = allPosts[0];
-  const morePosts = allPosts.slice(1);
+const Index = ({ allPosts, currentYearPosts, currentYear }: Props) => {
+  const heroPost = currentYearPosts[0];
+  const morePosts = currentYearPosts.slice(1);
+  const count = currentYearPosts.length;
+  const noun = count === 1 ? "post" : "posts";
   
   return (
     <>
@@ -25,6 +29,7 @@ const Index = ({ allPosts }: Props) => {
         <Container>
           <Header />
           <CalendarTimeline posts={allPosts.map(p => ({ slug: p.slug, date: p.date, tags: p.tags }))} autoScrollOnMount />
+          <h1 className="text-2xl font-semibold mt-4 mb-4">{count} {noun} in {currentYear}</h1>
           {heroPost && (
             <HeroPost
               title={heroPost.title}
@@ -48,7 +53,16 @@ export default Index;
 export const getStaticProps = async () => {
   const allPosts = getAllPosts(["title", "date", "slug", "externalUrl", "type", "tags", "videoDescription"]);
 
+  // Find the most recent year with activity
+  function yearOf(iso: string): number {
+    return new Date(iso).getUTCFullYear();
+  }
+
+  const years = Array.from(new Set(allPosts.map((p) => yearOf(p.date)))).sort((a, b) => b - a);
+  const currentYear = years[0] || new Date().getUTCFullYear();
+  const currentYearPosts = allPosts.filter((p) => yearOf(p.date) === currentYear);
+
   return {
-    props: { allPosts },
+    props: { allPosts, currentYearPosts, currentYear },
   };
 };

@@ -225,17 +225,14 @@ export default function CalendarTimeline({ posts, selectedDate, bare = false, hi
           <div className="absolute left-0 right-0" style={{ top: 0, height: yearsHeight }}>
             <div className="inline-flex items-center text-sm gap-2">
               {years.map((yy) => (
-                <a
+                <Link
                   key={yy}
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setYear(yy);
-                  }}
+                  href={`/year/${yy}`}
                   className={yy === year ? "font-extrabold" : "hover:underline"}
+                  onClick={() => setYear(yy)}
                 >
                   {yy}
-                </a>
+                </Link>
               ))}
             </div>
           </div>
