@@ -1,7 +1,7 @@
 ---
 title: "17 - Goodbye Malden"
 date: "2016-05-23T11:00:00.000Z"
-type: podcast
+type: audio
 tags:
   - podcast
 audioUrl: "https://episodes.hunchpig.audio/0017.mp3"

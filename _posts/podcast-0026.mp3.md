@@ -1,7 +1,7 @@
 ---
 title: "26 - Out of the Bunker"
 date: "2016-11-22T13:00:00.000Z"
-type: podcast
+type: audio
 tags:
   - podcast
 audioUrl: "https://episodes.hunchpig.audio/0026.mp3"

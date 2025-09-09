@@ -1,7 +1,7 @@
 ---
 title: "10 - We drink Matt's beer"
 date: "2016-03-26T23:00:00.000Z"
-type: podcast
+type: audio
 tags:
   - podcast
 audioUrl: "https://episodes.hunchpig.audio/0010.mp3"

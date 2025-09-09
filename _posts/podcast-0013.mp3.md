@@ -1,7 +1,7 @@
 ---
 title: "13 - Evergreen peacoats"
 date: "2016-04-19T23:00:00.000Z"
-type: podcast
+type: audio
 tags:
   - podcast
 audioUrl: "https://episodes.hunchpig.audio/0013.mp3"

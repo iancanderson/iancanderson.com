@@ -1,7 +1,7 @@
 ---
 title: "30 - Bourbon Crusta"
 date: "2017-02-11T17:12:41.000Z"
-type: podcast
+type: audio
 tags:
   - podcast
 audioUrl: "https://episodes.hunchpig.audio/0030.mp3"

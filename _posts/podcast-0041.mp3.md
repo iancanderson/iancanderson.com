@@ -1,7 +1,7 @@
 ---
 title: "41 - 11 months ago"
 date: "2019-11-05T18:33:21.000Z"
-type: podcast
+type: audio
 tags:
   - podcast
 audioUrl: "https://episodes.hunchpig.audio/0041.mp3"

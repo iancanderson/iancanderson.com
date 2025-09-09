@@ -1,7 +1,7 @@
 ---
 title: "23 - An Interesting IPA"
 date: "2016-08-21T23:00:00.000Z"
-type: podcast
+type: audio
 tags:
   - podcast
 audioUrl: "https://episodes.hunchpig.audio/0023.mp3"

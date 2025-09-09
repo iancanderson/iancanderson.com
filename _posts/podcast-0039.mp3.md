@@ -1,7 +1,7 @@
 ---
 title: "39 - From the Vault"
 date: "2018-02-19T17:59:02.000Z"
-type: podcast
+type: audio
 tags:
   - podcast
 audioUrl: "https://episodes.hunchpig.audio/0039.mp3"

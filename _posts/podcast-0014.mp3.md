@@ -1,7 +1,7 @@
 ---
 title: "14 - It's a boy!"
 date: "2016-04-27T23:00:00.000Z"
-type: podcast
+type: audio
 tags:
   - podcast
 audioUrl: "https://episodes.hunchpig.audio/0014.mp3"

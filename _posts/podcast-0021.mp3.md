@@ -1,7 +1,7 @@
 ---
 title: "21 - What's a delegate?"
 date: "2016-07-21T13:00:00.000Z"
-type: podcast
+type: audio
 tags:
   - podcast
 audioUrl: "https://episodes.hunchpig.audio/0021.mp3"

@@ -1,7 +1,7 @@
 ---
 title: "24 - The Cuddle Cove"
 date: "2016-08-31T13:00:00.000Z"
-type: podcast
+type: audio
 tags:
   - podcast
 audioUrl: "https://episodes.hunchpig.audio/0024.mp3"

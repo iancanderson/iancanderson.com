@@ -1,7 +1,7 @@
 ---
 title: "7 - Pig News!"
 date: "2016-02-27T23:00:00.000Z"
-type: podcast
+type: audio
 tags:
   - podcast
 audioUrl: "https://episodes.hunchpig.audio/0007.mp3"

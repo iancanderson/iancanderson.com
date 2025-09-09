@@ -1,7 +1,7 @@
 ---
 title: "19 - Dole Whip"
 date: "2016-06-23T13:00:00.000Z"
-type: podcast
+type: audio
 tags:
   - podcast
 audioUrl: "https://episodes.hunchpig.audio/0019.mp3"

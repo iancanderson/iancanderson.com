@@ -1,7 +1,7 @@
 ---
 title: "5 - Is Matt even here?"
 date: "2016-02-14T20:00:00.000Z"
-type: podcast
+type: audio
 tags:
   - podcast
 audioUrl: "https://episodes.hunchpig.audio/0005.mp3"

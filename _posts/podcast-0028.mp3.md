@@ -1,7 +1,7 @@
 ---
 title: "28 - Dutch Elm Disease"
 date: "2016-12-22T22:00:00.000Z"
-type: podcast
+type: audio
 tags:
   - podcast
 audioUrl: "https://episodes.hunchpig.audio/0028.mp3"

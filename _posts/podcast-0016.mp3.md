@@ -1,7 +1,7 @@
 ---
 title: "16 - What Ian's face looks like"
 date: "2016-05-15T23:00:00.000Z"
-type: podcast
+type: audio
 tags:
   - podcast
 audioUrl: "https://episodes.hunchpig.audio/0016.mp3"

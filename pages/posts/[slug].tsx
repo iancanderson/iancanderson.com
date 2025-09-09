@@ -70,7 +70,7 @@ const Post = ({ post, morePosts, preview }: Props) => {
                   </div>
                 </div>
               ) : null}
-              {post.type === 'podcast' && (post as any).audioUrl ? (
+              {post.type === 'audio' && (post as any).audioUrl ? (
                 <div className="mb-8">
                   <audio controls className="w-full" src={(post as any).audioUrl} preload="metadata">
                     Your browser does not support the audio element.
@@ -80,7 +80,7 @@ const Post = ({ post, morePosts, preview }: Props) => {
               {post.type === 'video' && (post as any).videoDescription && (
                 <p className="mb-6 text-base">{(post as any).videoDescription}</p>
               )}
-              {post.type === 'podcast' && (post as any).summary && (
+              {post.type === 'audio' && (post as any).summary && (
                 <p className="mb-6 text-base">{(post as any).summary}</p>
               )}
               <PostBody>

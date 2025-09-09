@@ -1,7 +1,7 @@
 ---
 title: "12 - Evening edition"
 date: "2016-04-14T23:00:00.000Z"
-type: podcast
+type: audio
 tags:
   - podcast
 audioUrl: "https://episodes.hunchpig.audio/0012.mp3"

@@ -1,7 +1,7 @@
 ---
 title: "38 - Rob Roy"
 date: "2017-12-21T01:13:20.000Z"
-type: podcast
+type: audio
 tags:
   - podcast
 audioUrl: "https://episodes.hunchpig.audio/0038.mp3"

@@ -1,7 +1,7 @@
 ---
 title: "18 - Hello Swampscott"
 date: "2016-06-04T21:00:00.000Z"
-type: podcast
+type: audio
 tags:
   - podcast
 audioUrl: "https://episodes.hunchpig.audio/0018.mp3"

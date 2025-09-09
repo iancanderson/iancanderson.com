@@ -1,7 +1,7 @@
 ---
 title: "31 - Martinez"
 date: "2017-02-27T00:59:17.000Z"
-type: podcast
+type: audio
 tags:
   - podcast
 audioUrl: "https://episodes.hunchpig.audio/0031.mp3"

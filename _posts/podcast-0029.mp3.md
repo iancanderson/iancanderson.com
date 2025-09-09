@@ -1,7 +1,7 @@
 ---
 title: "29 - Thanks Obama"
 date: "2017-01-19T22:00:00.000Z"
-type: podcast
+type: audio
 tags:
   - podcast
 audioUrl: "https://episodes.hunchpig.audio/0029.mp3"

@@ -1,7 +1,7 @@
 ---
 title: "25 - German for wheat"
 date: "2016-09-22T23:00:00.000Z"
-type: podcast
+type: audio
 tags:
   - podcast
 audioUrl: "https://episodes.hunchpig.audio/0025.mp3"

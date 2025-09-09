@@ -5,7 +5,7 @@
   Default feed: https://hunchpig.audio/podcast.xml (override with PODCAST_FEED_URL)
 
   Each episode becomes: _posts/podcast-<id-or-slug>.md with frontmatter:
-    title, date (ISO), type: podcast, tags: [podcast], audioUrl (enclosure), summary (itunes:summary)
+    title, date (ISO), type: audio, tags: [podcast], audioUrl (enclosure), summary (itunes:summary)
 
   Usage:
     node scripts/sync-podcast.js
@@ -115,7 +115,7 @@ function writePostFile(item) {
     '---',
     `title: "${title}"`,
     `date: "${dateIso}"`,
-    'type: podcast',
+    'type: audio',
     'tags:',
     '  - podcast',
     (audioUrl ? `audioUrl: "${audioUrl}"` : ''),

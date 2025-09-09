@@ -1,7 +1,7 @@
 ---
 title: "8 - Listen on your dog and bone"
 date: "2016-03-13T23:00:00.000Z"
-type: podcast
+type: audio
 tags:
   - podcast
 audioUrl: "https://episodes.hunchpig.audio/0008.mp3"

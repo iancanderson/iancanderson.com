@@ -1,7 +1,7 @@
 ---
 title: "40 - A Radio CD"
 date: "2018-11-25T18:18:05.000Z"
-type: podcast
+type: audio
 tags:
   - podcast
 audioUrl: "https://episodes.hunchpig.audio/0040.mp3"

@@ -1,7 +1,7 @@
 ---
 title: "20 - Basic Outcome"
 date: "2016-06-27T13:00:00.000Z"
-type: podcast
+type: audio
 tags:
   - podcast
 audioUrl: "https://episodes.hunchpig.audio/0020.mp3"

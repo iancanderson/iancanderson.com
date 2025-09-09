@@ -1,7 +1,7 @@
 ---
 title: "4 - Zed is naught zero"
 date: "2016-02-06T22:00:00.000Z"
-type: podcast
+type: audio
 tags:
   - podcast
 audioUrl: "https://episodes.hunchpig.audio/0004.mp3"

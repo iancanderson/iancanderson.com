@@ -1,7 +1,7 @@
 ---
 title: "36 - Zen(castr) and the Art of Conversational Timing"
 date: "2017-11-09T01:01:10.000Z"
-type: podcast
+type: audio
 tags:
   - podcast
 audioUrl: "https://episodes.hunchpig.audio/0036.mp3"

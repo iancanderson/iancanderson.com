@@ -1,7 +1,7 @@
 ---
 title: "15 - Warning: Implicit Content"
 date: "2016-05-10T11:00:00.000Z"
-type: podcast
+type: audio
 tags:
   - podcast
 audioUrl: "https://episodes.hunchpig.audio/0015.mp3"

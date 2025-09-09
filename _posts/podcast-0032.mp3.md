@@ -1,7 +1,7 @@
 ---
 title: "32 - Sidecar"
 date: "2017-03-23T00:51:34.000Z"
-type: podcast
+type: audio
 tags:
   - podcast
 audioUrl: "https://episodes.hunchpig.audio/0032.mp3"

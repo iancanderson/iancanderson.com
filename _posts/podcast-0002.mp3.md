@@ -1,7 +1,7 @@
 ---
 title: "2 - Outrospection"
 date: "2016-01-23T22:00:00.000Z"
-type: podcast
+type: audio
 tags:
   - podcast
 audioUrl: "https://episodes.hunchpig.audio/0002.mp3"

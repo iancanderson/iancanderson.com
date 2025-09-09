@@ -1,7 +1,7 @@
 ---
 title: "9 - Katie in Massachusetts!"
 date: "2016-03-19T23:00:00.000Z"
-type: podcast
+type: audio
 tags:
   - podcast
 audioUrl: "https://episodes.hunchpig.audio/0009.mp3"

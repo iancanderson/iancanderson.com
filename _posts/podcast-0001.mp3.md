@@ -1,7 +1,7 @@
 ---
 title: "1 - The Ginger Strikes Back"
 date: "2016-01-17T21:00:00.000Z"
-type: podcast
+type: audio
 tags:
   - podcast
 audioUrl: "https://episodes.hunchpig.audio/0001.mp3"

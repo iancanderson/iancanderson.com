@@ -1,7 +1,7 @@
 ---
 title: "35 - A three-month reunion"
 date: "2017-08-24T18:01:43.000Z"
-type: podcast
+type: audio
 tags:
   - podcast
 audioUrl: "https://episodes.hunchpig.audio/0035.mp3"

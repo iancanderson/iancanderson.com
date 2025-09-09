@@ -1,7 +1,7 @@
 ---
 title: "3 - Schadenfreude"
 date: "2016-01-30T22:00:00.000Z"
-type: podcast
+type: audio
 tags:
   - podcast
 audioUrl: "https://episodes.hunchpig.audio/0003.mp3"
