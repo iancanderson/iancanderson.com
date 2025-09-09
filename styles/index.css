@@ -123,3 +123,20 @@ a:hover { color: var(--brutal-link-hover); }
 
 /* Keep chips using foreground color, not link color */
 .brutal-chip { color: var(--brutal-fg); }
+
+/* Plyr theming to match brutal variables */
+.plyr {
+  /* Use standard theme purple for highlights */
+  --plyr-color-main: var(--brutal-link);
+}
+.plyr--audio .plyr__controls {
+  background-color: var(--brutal-card);
+  color: var(--brutal-fg);
+}
+.plyr__control {
+  color: var(--brutal-fg);
+}
+.plyr--full-ui input[type="range"] {
+  /* Match slider accent to theme purple */
+  color: var(--brutal-link);
+}

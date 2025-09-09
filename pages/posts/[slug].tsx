@@ -14,6 +14,7 @@ import { serialize } from "next-mdx-remote/serialize";
 import { MDXRemote } from "next-mdx-remote";
 import prism from "remark-prism";
 import Counter from "../../components/counter";
+import AudioPlayer from "../../components/audio-player";
 
 type Props = {
   post: PostType;
@@ -71,10 +72,8 @@ const Post = ({ post, morePosts, preview }: Props) => {
                 </div>
               ) : null}
               {post.type === 'audio' && (post as any).audioUrl ? (
-                <div className="mb-8">
-                  <audio controls className="w-full" src={(post as any).audioUrl} preload="metadata">
-                    Your browser does not support the audio element.
-                  </audio>
+                <div className="mb-8 brutal-border bg-[color:var(--brutal-card)] p-3">
+                  <AudioPlayer src={(post as any).audioUrl} title={post.title} />
                 </div>
               ) : null}
               {post.type === 'video' && (post as any).videoDescription && (
