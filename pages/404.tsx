@@ -11,7 +11,7 @@ export default function Custom404() {
       </Head>
       <Container>
         <Header />
-        <h1 className="text-2xl font-semibold mb-6">404 - Page Not Found</h1>
+        <h2 className="text-2xl font-semibold mb-6">404 - Page Not Found</h2>
         <p>Sorry, we couldn&apos;t find that page.</p>
       </Container>
     </Layout>

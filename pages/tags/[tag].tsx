@@ -25,13 +25,13 @@ export default function TagPage({ tag, posts }: Props) {
       </Head>
       <Container>
         <Header />
-        <h1 className="text-2xl font-semibold mb-8 flex items-center gap-3">
+        <h2 className="text-2xl font-semibold mb-8 flex items-center gap-3">
           <span>{count} {noun} tagged with</span>
           <span className={`brutal-chip is-active ${colorClassForTag(tag)} inline-flex items-center gap-2 px-2 py-1`}>
             <span className="chip-emoji" aria-hidden>{emojiForTag(tag)}</span>
             <span>#{tag}</span>
           </span>
-        </h1>
+        </h2>
         {sorted.length > 0 ? (
           <MoreStories posts={sorted} />
         ) : (

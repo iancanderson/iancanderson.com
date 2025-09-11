@@ -31,7 +31,7 @@ export default function YearPage({ year, posts, allPosts }: Props) {
         <CalendarTimeline 
           posts={allPosts.map(p => ({ slug: p.slug, date: p.date, tags: p.tags }))}
         />
-        <h1 className="text-2xl font-semibold mt-4 mb-4">{count} {noun} in {year}</h1>
+        <h2 className="text-2xl font-semibold mt-4 mb-4">{count} {noun} in {year}</h2>
         {count > 0 ? (
           <MoreStories posts={posts} />
         ) : (
